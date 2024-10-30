@@ -128,6 +128,22 @@ body {
     margin-bottom: 100px;
 }
 
+/* New Request Styling */
+.newRequest-card {
+    background-color: #f5b942;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.newRequest-card span {
+    color: #333;
+    font-size: 0.9em;
+    margin: 5px 5px 5px;
+    margin-left: -10px;
+}
+
 /* Request Card Styling */
 .request-card {
     background-color: #f5b942;
