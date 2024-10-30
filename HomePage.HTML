@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AssistMe Login</title>
+        <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    </head>
+<body>
+    <div class="container">
+        <!-- Header with network details -->
+        <div class="header">
+            <span>📶 🔋</span>
+            <span>Zain KSA</span>
+        </div>
+
+        <!--Back button-->
+        <a href="log-in.HTML" class="back-link">🔙</a>
+        <br/>
+        <br/>
+
+        <!-- Login card -->
+        <div class="request-box">
+            <!-- First request card -->
+            <div class="request-card" id="requestCard">
+                <div class="request-header">
+                    <span>Request 1: <span class="status">Completed</span></span>
+                    <button class="toggle-btn" onclick="toggleDetails()">▼</button>
+                </div>
+                <div class="details">
+                    <p>10:06PM 10/3/2024</p>
+                    <p>Battery subscription</p>
+                    <p>Service Provider Name: *******</p>
+                    <p>Service Provider Number: *******</p>
+                    <p>Total cost: *** SAR</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+
+            <!-- Second request card -->
+            <div class="request-card" id="requestCard">
+                <div class="request-header">
+                    <span>Request 2: <span class="status">Canceled</span></span>
+                    <button class="toggle-btn" onclick="toggleDetails()">▼</button>
+                </div>
+                <div class="details">
+                    <p>10:06PM 10/3/2024</p>
+                    <p>Battery subscription</p>
+                    <p>Service Provider Name: *******</p>
+                    <p>Service Provider Number: *******</p>
+                    <p>Total cost: *** SAR</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+    </div>
+
+    <footer>
+        <button class="nav-btn">🏠</button>
+        <button class="nav-btn">👤</button>
+    </footer>
+    </div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+/* Base Body Styling */
 body {
     background-color: #2c241f;
     color: #f1be5e;
@@ -9,12 +10,13 @@ body {
     margin: 0;
 }
 
+/* Main Container */
 .container {
     width: 320px;
     text-align: center;
 }
 
-/* Header styling */
+/* Header Styling */
 .header {
     display: flex;
     justify-content: space-between;
@@ -24,7 +26,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Main login card styling */
+/* Login Card Styling */
 .login-card {
     background-color: #f1be5e;
     padding: 20px;
@@ -45,7 +47,7 @@ body {
     margin: 10px 0 20px;
 }
 
-/* Input styling */
+/* Input Group Styling */
 .input-group {
     margin: 15px;
 }
@@ -61,7 +63,7 @@ body {
     text-align: center;
 }
 
-/* Role selection styling */
+/* Role Selection Styling */
 .role-selection {
     text-align: left;
     margin-bottom: 20px;
@@ -79,7 +81,7 @@ body {
     margin-right: 8px;
 }
 
-/* Button styling */
+/* Button Styling */
 .continue-btn {
     background-color: #333;
     color: #fff;
@@ -95,7 +97,7 @@ body {
     background-color: #444;
 }
 
-/* Footer link styling */
+/* Footer Link Styling */
 .footer {
     margin-top: 20px;
     color: #f1be5e;
@@ -116,4 +118,45 @@ body {
     color: #f1be5e;
     font-size: 16px;
     margin-left: -280px; /* Adjust this value as needed */
+}
+
+/* Request Box Styling */
+.request-box {
+    background-color: #2b2929;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 100px;
+}
+
+/* Request Card Styling */
+.request-card {
+    background-color: #f5b942;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.request-card span {
+    color: #333;
+    font-size: 0.9em;
+    margin: 5px 5px 5px;
+    margin-left: -10px;
+}
+
+/* Expandable Details in Request Card */
+.details {
+    display: none;
+    font-size: 0.9em;
+    color: #000;
+    padding-top: 10px;
+}
+
+/* Toggle Button for Expanding Details */
+.toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: #000;
+    cursor: pointer;
 }
