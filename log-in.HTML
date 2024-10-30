@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AssistMe Login</title>
+        <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    </head>
+<body>
+    <div class="container">
+        <!-- Header with network details -->
+        <div class="header">
+            <span>📶 🔋</span>
+            <span>Zain KSA</span>
+        </div>
+
+        <!-- Title and subtitle -->
+        <h1><strong>AssistMe</strong>, Your Safety, Our Priority</h1>
+
+        <!-- Login card -->
+        <div class="login-card">
+            <h2>Log in</h2>
+            <p>Enter your mobile number to create or log in to your account</p>
+            <div class="input-group">
+                <input type="text" placeholder="05******">
+            </div>
+            <div class="role-selection">
+                <label><input type="radio" name="role" value="AssistMe User"> AssistMe User</label>
+                <label><input type="radio" name="role" value="Assistance Provider"> Assistance Provider</label>
+                <label><input type="radio" name="role" value="Admin"> Admin</label>
+            </div>
+            <button class="continue-btn" onclick="window.location.href='verify.html'">Continue</button>
+        </div>
+
+        <!-- Footer with register link -->
+        <div class="footer">
+            <p>Want to be an assistance provider? <a href="#">Register Now</a></p>
+        </div>
+    </div>
+</body>
+</html>

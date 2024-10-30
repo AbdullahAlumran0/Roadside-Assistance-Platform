@@ -1,0 +1,119 @@
+body {
+    background-color: #2c241f;
+    color: #f1be5e;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 320px;
+    text-align: center;
+}
+
+/* Header styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* Main login card styling */
+.login-card {
+    background-color: #f1be5e;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.login-card h2 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #000;
+}
+
+.login-card p {
+    color: #333;
+    font-size: 0.9em;
+    margin: 10px 0 20px;
+}
+
+/* Input styling */
+.input-group {
+    margin: 15px;
+}
+
+.input-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+}
+
+/* Role selection styling */
+.role-selection {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.role-selection label {
+    display: block;
+    color: #333;
+    font-size: 0.9em;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.role-selection input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* Button styling */
+.continue-btn {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    width: 100%;
+}
+
+.continue-btn:hover {
+    background-color: #444;
+}
+
+/* Footer link styling */
+.footer {
+    margin-top: 20px;
+    color: #f1be5e;
+}
+
+.footer a {
+    color: #f1be5e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #f1be5e;
+    font-size: 16px;
+    margin-left: -280px; /* Adjust this value as needed */
+}
