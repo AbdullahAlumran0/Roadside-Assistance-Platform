@@ -1,6 +1,6 @@
 /* Base Body Styling */
 *{
-    font-family: "Poppins"
+    font-family: "Poppins", sans-serif;
 }
 body {
     background-color: #352F2F;
@@ -17,6 +17,10 @@ body {
 .container {
     width: 320px;
     text-align: center;
+    align-self: center;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* Header Styling */
@@ -94,6 +98,16 @@ body {
     font-size: 1em;
     cursor: pointer;
     width: 100%;
+}
+.next-btn {
+  background-color: #352F2F;
+  color: #FBC767;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  width: 30%;
 }
 
 .continue-btn:hover {
@@ -249,6 +263,23 @@ body {
     background-color: #008000;
 }
 
+/* Registeration box for assistance provider*/
+.registeration-box {
+  background-color: #FBC767;
+  padding: 20px;
+  border-radius: 15px;
+  height: 400px;
+  width: 300px;
+  text-align: center;
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  vertical-align:baseline;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
 /* Poppins Font style code */
 .poppins-thin {
     font-family: "Poppins", sans-serif;
@@ -272,6 +303,7 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
+    color: #352F2F;
   }
   
   .poppins-medium {
@@ -290,6 +322,8 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-style: normal;
+    color: #352F2F;
+    font-size: 20px;
   }
   
   .poppins-extrabold {
