@@ -1,114 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AssistMe Login</title>
-        <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssistMe Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Back button -->
+        <a href="log-in.html" class="back-link"><img src="BackButton.png" width="55p" height="55p"></a>
+        <br/><br/>
 
-            <!--Back button-->
-            <a href="log-in.HTML" class="back-link"><img src="BackButton.png" width="55p" height="55p" ></a>
-            <br/>
-            <br/>
-
-            <!-- Requests box containing request cards -->
-            <div class="request-box">
-                <!-- First request card -->
-                <div class="request-card" id="requestCard1">
-                    <div class="request-header">
-                        <span>Request 1: <span class="status">Completed</span></span>
-                        <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
-                    </div>
-                    <div class="details" style="display: none;">
-                        <p>10:06PM 10/3/2024</p>
-                        <p>Battery subscription</p>
-                        <p>Service Provider Name: *******</p>
-                        <p>Service Provider Number: *******</p>
-                        <p>Total cost: *** SAR</p>
-                        <p>⭐⭐⭐⭐⭐</p>
-                    </div>
+        <!-- Requests box containing request cards -->
+        <div class="request-box">
+            <!-- Example of a request card -->
+            <div class="request-card" id="requestCard1">
+                <div class="request-header">
+                    <span>Request 1: <span class="status">Completed</span></span>
+                    <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
                 </div>
-
-                <!-- Second request card -->
-                <div class="request-card" id="requestCard2">
-                    <div class="request-header">
-                        <span>Request 2: <span class="status">Canceled</span></span>
-                        <button class="toggle-btn" onclick="toggleDetails('requestCard2')">▼</button>
-                    </div>
-                    <div class="details" style="display: none;">
-                        <p>10:06PM 10/3/2024</p>
-                        <p>Battery subscription</p>
-                        <p>Service Provider Name: *******</p>
-                        <p>Service Provider Number: *******</p>
-                        <p>Total cost: *** SAR</p>
-                        <p>⭐⭐⭐⭐⭐</p>
-                    </div>
-                </div>
-
-                <!-- New request button -->
-                <div class="newRequest-card">
-                    <div class="request-header">
-                        <span>New request</span>
-                        <button class="toggle-btn" onclick="showNewRequestModal()">+</button>
-                    </div>
+                <div class="details" style="display: none;">
+                    <p>10:06PM 10/3/2024</p>
+                    <p>Battery subscription</p>
+                    <p>Service Provider Name: *******</p>
+                    <p>Service Provider Number: *******</p>
+                    <p>Total cost: *** SAR</p>
+                    <p>⭐⭐⭐⭐⭐</p>
                 </div>
             </div>
 
-            <!-- Bottom navigation bar -->
-            <footer>
-                <button class="nav-btn">🏠</button>
-                <button class="nav-btn">👤</button>
-            </footer>
-        </div>
-
-        <!-- New Request Modal -->
-        <div id="newRequestModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <input type="text" placeholder="Service 1">
-                <button class="toggle-btn" onclick="showNewRequestModal()">+</button>
-                <input type="text" placeholder="Service 2 (optional)">
-                <input type="text" placeholder="Service 3 (optional)">
-                <input type="text" placeholder="Car details">
-                <input type="text" placeholder="Share Location">
-                
-                <!-- Modal buttons -->
-                <div class="modal-buttons">
-                    <button class="cancel-btn" onclick="hideNewRequestModal()">Cancel</button>
-                    <button class="confirm-btn">Confirm</button>
+            <!-- New request button -->
+            <div class="newRequest-card">
+                <div class="request-header">
+                    <span>New request</span>
+                    <button class="toggle-btn" onclick="showNewRequestModal()">+</button>
                 </div>
             </div>
         </div>
 
-        <script>
-            // Function to toggle the details of a specific request card
-            function toggleDetails(cardId) {
-                var card = document.getElementById(cardId);
-                var details = card.querySelector('.details');
-                var toggleBtn = card.querySelector('.toggle-btn');
+        <!-- Bottom navigation bar -->
+        <footer>
+            <button class="nav-btn">🏠</button>
+            <button class="nav-btn">👤</button>
+        </footer>
+    </div>
+
+    <!-- New Request Modal -->
+    <div id="newRequestModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <!-- Replaced Service 1 input with styled request-card -->
+            <div class="class="service-option style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
+                <div class="request-header">
+                    <span>Service 1: </span>
+                    <button class="toggle-btn" style="background-color: #FBC767"; onclick="showServiceOffersModal()">+</button>
+                </div>
+                <div class="details" id="service1Details" style="display: none;">
+                    <!-- Service details will be updated dynamically -->
+                </div>
+            </div>
+
+            <input type="text" placeholder="Service 2 (optional)">
+            <input type="text" placeholder="Service 3 (optional)">
+            <input type="text" placeholder="Car details">
+            <input type="text" placeholder="Share Location">
+            
+            <!-- Modal buttons -->
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="hideNewRequestModal()">Cancel</button>
+                <button class="confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Offers Modal -->
+    <div id="serviceOffersModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Select a Service Offer for Service 1</h2>
+
+            <!-- Service options with radio buttons styled as boxes -->
+            <div class="service-option" style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;">
+                <label>
+                    <input type="radio" name="serviceOption" value="Option 1: Basic Service - SAR 100">
+                    <span>Option 1: Basic Service - SAR 100 <br> Description: Basic roadside assistance.</span>
+                </label>
+            </div>
+
+            <div class="service-option" style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;">
+                <label>
+                    <input type="radio" name="serviceOption" value="Option 2: Premium Service - SAR 150">
+                    <span>Option 2: Premium Service - SAR 150 <br> Description: Includes towing and battery support.</span>
+                </label>
+            </div>
+
+            <div class="service-option" style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;">
+                <label>
+                    <input type="radio" name="serviceOption" value="Option 3: VIP Service - SAR 200">
+                    <span>Option 3: VIP Service - SAR 200 <br> Description: Full support with additional benefits.</span>
+                </label>
+            </div>
+
+            <!-- Modal buttons -->
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="hideServiceOffersModal()">Cancel</button>
+                <button class="confirm-btn" onclick="confirmServiceSelection()">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle details for request cards
+        function toggleDetails(cardId) {
+            var card = document.getElementById(cardId);
+            var details = card.querySelector('.details');
+            var toggleBtn = card.querySelector('.toggle-btn');
+            
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                toggleBtn.textContent = '▲';
+            } else {
+                details.style.display = 'none';
+                toggleBtn.textContent = '▼';
+            }
+        }
+
+        // Show and hide the New Request modal
+        function showNewRequestModal() {
+            document.getElementById("newRequestModal").style.display = "flex";
+        }
+
+        function hideNewRequestModal() {
+            document.getElementById("newRequestModal").style.display = "none";
+        }
+
+        // Show and hide the Service Offers modal
+        function showServiceOffersModal() {
+            document.getElementById("serviceOffersModal").style.display = "flex";
+        }
+
+        function hideServiceOffersModal() {
+            document.getElementById("serviceOffersModal").style.display = "none";
+        }
+
+        // Confirm service selection and display details in Service 1 card
+        function confirmServiceSelection() {
+            const selectedOption = document.querySelector('input[name="serviceOption"]:checked');
+            if (selectedOption) {
+                // Display the selected service details in Service 1 card
+                const service1Details = document.getElementById("service1Details");
+                service1Details.innerHTML = `<p>${selectedOption.value}</p>`;
+                service1Details.style.display = "block";
                 
-                if (details.style.display === 'none') {
-                    details.style.display = 'block';
-                    toggleBtn.textContent = '▲';
-                } else {
-                    details.style.display = 'none';
-                    toggleBtn.textContent = '▼';
-                }
+                hideServiceOffersModal();
+            } else {
+                alert("Please select a service option.");
             }
-
-            // Functions to show and hide the New Request modal
-            function showNewRequestModal() {
-                document.getElementById("newRequestModal").style.display = "flex";
-            }
-
-            function hideNewRequestModal() {
-                document.getElementById("newRequestModal").style.display = "none";
-            }
-        </script>
-    </body>
+        }
+    </script>
+</body>
 </html>
