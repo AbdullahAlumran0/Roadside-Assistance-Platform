@@ -65,7 +65,15 @@
 
             <input type="text" placeholder="Service 2 (optional)">
             <input type="text" placeholder="Service 3 (optional)">
-            <input type="text" placeholder="Car details">
+            <div class="class="car-detail-item style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
+                <div class="request-header">
+                    <span>Car details: </span>
+                    <button class="toggle-btn" style="background-color: #FBC767"; onclick="showCarDetailsModal()">+</button>
+                </div>
+                <div class="details" id="service1Details" style="display: none;">
+                    <!-- Service details will be updated dynamically -->
+                </div>
+            </div>
             <input type="text" placeholder="Share Location">
             
             <!-- Modal buttons -->
@@ -111,6 +119,61 @@
         </div>
     </div>
 
+    <!-- Car Details Modal -->
+    <div id="carDetailsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <!-- Car Details Section -->
+            <div id="carDetailsSection" style="background-color: #FBC767; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #352F2F;">
+                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; text-align: center; color: #352F2F;">Car Details</h3>
+                
+                <!-- Manufacturer -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="manufacturer-icon.png" alt="Manufacturer Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Manufacturer" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Model Year -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="year-icon.png" alt="Model Year Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Model Year" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Vehicle Model -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="model-icon.png" alt="Vehicle Model Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Vehicle Model" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Vehicle Color -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="color-icon.png" alt="Vehicle Color Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Vehicle Color" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Plate Letters -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="plate-letters-icon.png" alt="Plate Letters Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Plate Letters" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Plate Number -->
+                <div class="car-detail-item" style="display: flex; align-items: center; background-color: #352F2F; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <img src="plate-number-icon.png" alt="Plate Number Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <input type="text" placeholder="Plate Number" style="flex: 1; background-color: transparent; border: none; color: #FFFFFF; font-family: 'Poppins', sans-serif;">
+                </div>
+                
+                <!-- Save for later checkbox and confirm button -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <label style="color: #352F2F; font-family: 'Poppins', sans-serif;">
+                        <input type="checkbox" style="margin-right: 5px;">
+                        Save for later
+                    </label>
+                    <button style="background-color: #352F2F; color: #FFFFFF; padding: 10px 20px; border: none; border-radius: 5px; font-family: 'Poppins', sans-serif;">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Toggle details for request cards
         function toggleDetails(cardId) {
@@ -143,6 +206,15 @@
 
         function hideServiceOffersModal() {
             document.getElementById("serviceOffersModal").style.display = "none";
+        }
+
+        // Show and hide the Car Details Offers modal
+        function showCarDetailsModal() {
+            document.getElementById("carDetailsModal").style.display = "flex";
+        }
+
+        function hideCarDetailsModal() {
+            document.getElementById("carDetailsModal").style.display = "none";
         }
 
         // Confirm service selection and display details in Service 1 card
