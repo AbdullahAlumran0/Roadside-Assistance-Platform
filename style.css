@@ -225,3 +225,15 @@ body {
 .poppins-black {
   font-weight: 900;
 }
+
+/* Checkbox */
+.save-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.save-checkbox input[type="checkbox"] {
+  margin-right: 5px;
+}
