@@ -120,3 +120,30 @@ function confirmCarDetailsSelection() {
         alert("Please fill in all the car details.");
     }
 }
+
+
+//Add the new request into request box in home
+function addNewRequest() {
+    // Get the request box and the new request card
+    const requestBox = document.querySelector('.request-box');
+    const newRequestCard = document.querySelector('.newRequest-card');
+
+    // Create a new request card element
+    const newCard = document.createElement('div');
+    newCard.className = 'request-card';
+    newCard.innerHTML = `
+        <div class="request-header">
+            <span>Request: <span class="status">Pending</span></span>
+            <button class="toggle-btn" onclick="toggleDetails('newRequestCard')">▼</button>
+        </div>
+        <div class="details" style="display: none;">
+            <p>Service details will be updated dynamically</p>
+        </div>
+    `;
+
+    // Insert the new card before the new request card
+    requestBox.insertBefore(newCard, newRequestCard);
+
+    // Hide the New Request Modal
+    hideNewRequestModal();
+}
