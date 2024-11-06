@@ -22,7 +22,7 @@ body {
 }
 .registeration-box {
   background-color: #FBC767;
-  color: #352F2F; /* Ensure readable text color */
+  color: #352F2F;
   padding: 20px;
   border-radius: 15px;
   height: 400px;
@@ -52,7 +52,7 @@ body {
 /* Request and Login Cards Styling */
 .login-card, .request-card, .newRequest-card {
   background-color: #FBC767;
-  color: #352F2F; /* Ensure readable text color */
+  color: #352F2F;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -76,7 +76,7 @@ body {
   border-radius: 10px;
   border: none;
   background-color: #352F2F;
-  color: #FBC767; /* Light text color for readability */
+  color: #FBC767;
   font-size: 1em;
   text-align: center;
   margin-bottom: 10px;
@@ -112,7 +112,7 @@ body {
   width: 60%;
 }
 
-.continue-btn,.next-btn {
+.continue-btn, .next-btn {
   background-color: #352F2F;
   color: #FBC767;
 }
@@ -149,7 +149,7 @@ body {
 /* Request Box Styling */
 .request-box {
   background-color: #352F2F;
-  color: #FBC767; /* Light text for better readability */
+  color: #FBC767;
   border-radius: 10px;
   padding: 15px;
 }
@@ -157,7 +157,7 @@ body {
 /* Expandable Details in Request Card */
 .details {
   font-size: 0.9em;
-  color: #FBC767; /* Ensure details text is readable */
+  color: #FBC767;
   padding-top: 10px;
   display: none;
 }
@@ -187,7 +187,7 @@ body {
 
 .modal-content {
   background-color: #FBC767;
-  color: #352F2F; /* Text color for readability */
+  color: #352F2F;
   padding: 20px;
   border-radius: 15px;
   width: 90%;
@@ -251,4 +251,108 @@ body {
 
 .save-checkbox input[type="checkbox"] {
   margin-right: 5px;
+}
+
+/* Responsive Styles */
+
+/* Mobile Phones */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .registeration-box {
+    height: auto;
+    padding: 15px;
+  }
+
+  .header, .footer {
+    font-size: 0.8em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 0.9em;
+    padding: 15px;
+  }
+
+  .toggle-btn {
+    font-size: 1em;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px auto 50px;
+    grid-template-areas:
+      "head"
+      "main"
+      "foot";
+    gap: 10px;
+    margin: 0;
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+
+  .registeration-box {
+    padding: 20px;
+    height: auto;
+  }
+
+  .header, .footer {
+    font-size: 0.9em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 1em;
+    padding: 20px;
+  }
+
+  body {
+    grid-template-columns: 200px auto;
+    grid-template-rows: 50px 150px 150px 50px;
+    grid-template-areas:
+      "head head"
+      "nav main"
+      "aside main"
+      "foot foot";
+  }
+}
+
+/* Laptops and Larger Screens */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 800px;
+  }
+
+  .registeration-box {
+    padding: 30px;
+    height: 500px;
+  }
+
+  .header, .footer {
+    font-size: 1em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 1.1em;
+    padding: 25px;
+  }
+
+  .toggle-btn {
+    font-size: 1.2em;
+  }
+
+  body {
+    grid-template-columns: 200px auto 200px;
+    grid-template-rows: 50px 300px 50px;
+    grid-template-areas:
+      "head head head"
+      "nav main aside"
+      "foot foot foot";
+  }
 }
