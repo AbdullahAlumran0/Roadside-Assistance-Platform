@@ -122,7 +122,7 @@ function confirmCarDetailsSelection() {
 }
 
 
-//Add the new request into request box in home
+//Add the new request into request box in home page
 function addNewRequest() {
     // Get the request box and the new request card
     const requestBox = document.querySelector('.request-box');
