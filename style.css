@@ -20,6 +20,14 @@ body {
   max-width: 400px;
   text-align: center;
 }
+.registeration-box {
+  background-color: #FBC767;
+  color: #352F2F; /* Ensure readable text color */
+  padding: 20px;
+  border-radius: 15px;
+  height: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
 /* Back Button */
 .back-link {
@@ -96,8 +104,15 @@ body {
   width: 100%;
   margin-top: 10px;
 }
+.next-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 60%;
+}
 
-.continue-btn {
+.continue-btn,.next-btn {
   background-color: #352F2F;
   color: #FBC767;
 }
