@@ -89,21 +89,34 @@ function confirmServiceSelection() {
     }
 }
 
-// Confirm carDetails selection and display details
+// Function to confirm car details selection and display it
 function confirmCarDetailsSelection() {
-// Get the selected car detail option
-const selectedOption = document.querySelector('input[name="carDetail"]:checked');
-
-if (selectedOption) {
-// Display the selected car detail in the corresponding section
-const carDetails = document.getElementById("carDetails");
-carDetails.innerHTML = `<p>${selectedOption.value}</p>`;
-carDetails.style.display = "block"; // Show the car details section
-
-// Hide the car details modal after selection
-hideCarDetailsModal();
-} else {
-// Alert if no option is selected
-alert("Please select a car detail option.");
-}
+    // Get the values from the input fields
+    const manufacturer = document.querySelector('input[placeholder="Manufacturer"]').value;
+    const modelYear = document.querySelector('input[placeholder="Model Year"]').value;
+    const vehicleModel = document.querySelector('input[placeholder="Vehicle Model"]').value;
+    const vehicleColor = document.querySelector('input[placeholder="Vehicle Color"]').value;
+    const plateLetters = document.querySelector('input[placeholder="Plate Letters"]').value;
+    const plateNumber = document.querySelector('input[placeholder="Plate Number"]').value;
+    
+    // Check if all fields have values
+    if (manufacturer && modelYear && vehicleModel && vehicleColor && plateLetters && plateNumber) {
+        // Display the selected car details in the appropriate section
+        const carDetails = document.getElementById("carDetails");
+        carDetails.innerHTML = `
+            <p><strong>Manufacturer:</strong> ${manufacturer}</p>
+            <p><strong>Model Year:</strong> ${modelYear}</p>
+            <p><strong>Vehicle Model:</strong> ${vehicleModel}</p>
+            <p><strong>Vehicle Color:</strong> ${vehicleColor}</p>
+            <p><strong>Plate Letters:</strong> ${plateLetters}</p>
+            <p><strong>Plate Number:</strong> ${plateNumber}</p>
+        `;
+        carDetails.style.display = "block";  // Show the car details section
+        
+        // Hide the modal after selection
+        hideCarDetailsModal();
+    } else {
+        // Alert if any field is missing
+        alert("Please fill in all the car details.");
+    }
 }
