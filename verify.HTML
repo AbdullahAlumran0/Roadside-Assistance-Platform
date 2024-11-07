@@ -22,12 +22,24 @@
             <div class="input-group">
                 <input type="text" placeholder="******" maxlength="6">
             </div>
-            <button class="continue-btn" onclick="redirectBasedOnRole()">Continue</button>
+            <button class="continue-btn" onclick=verifyAndRedirect()>Continue</button>
             <br>
             <br>
             <a href="log-in.HTML">Resend PIN code</a>
         </div>
-
+        <script>
+            function verifyAndRedirect() {
+                // Retrieve the saved role from localStorage
+                const selectedRole = localStorage.getItem('selectedRole');
+            
+                // Redirect based on the role
+                if (selectedRole === 'Admin') {
+                    window.location.href = 'AdminView.html'; // Admin view page
+                } else {
+                    window.location.href = 'HomePage.html'; // Default page for other roles
+                }
+            }
+            </script>
         <!-- Footer with register link -->
         <div class="footer">
             <p>Want to be an assistance provider? <a href="registeration.HTML">Register Now</a></p>

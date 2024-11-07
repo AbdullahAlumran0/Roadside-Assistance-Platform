@@ -24,21 +24,22 @@
                 <label><input type="radio" name="role" value="Assistance Provider"> Assistance Provider</label>
                 <label><input type="radio" name="role" value="Admin"> Admin</label>
             </div>
-            <button class="continue-btn" onclick="window.location.href='verify.html'">Continue</button>
+            <button class="continue-btn" onclick=saveRoleAndRedirect()>Continue</button>
         </div>
         <script>
-            function chooseRole() {
-                // Get all radio buttons with the name 'role'
+            function saveRoleAndRedirect() {
+                // Get selected role
                 const roles = document.getElementsByName('role');
                 let selectedRole = '';
             
-                // Loop through radio buttons to find the selected one
                 for (const role of roles) {
                     if (role.checked) {
                         selectedRole = role.value;
                         break;
                     }
                 }
+            
+                // Save the role in localStorage and redirect to verify page
                 localStorage.setItem('selectedRole', selectedRole);
                 window.location.href = 'verify.html';
             }
