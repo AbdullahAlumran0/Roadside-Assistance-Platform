@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistance Provider Form</title>
+    <style>
+        body {
+            background-color: #2D2D2D;
+            color: #FFCC66;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .box {
+            text-align: center;
+            background-color: #2D2D2D;
+            color: #FFCC66;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #FFCC66;
+            color: #2D2D2D;
+            padding: 20px;
+            border-radius: 15px;
+            width: 300px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .button {
+            background-color: #FFCC66;
+            color: #2D2D2D;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+}
+        .container.active {
+            display: block;
+        }
+
+        .container h2 {
+            color: #2D2D2D;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            background-color: #2D2D2D;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 8px 0;
+            color: #FFCC66;
+        }
+
+        .input-field input, .input-field select {
+            background-color: transparent;
+            border: none;
+            color: #FFCC66;
+            outline: none;
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .next-button, .confirm-button {
+            background-color: #FFCC66;
+            color: #2D2D2D;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .footer-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #FFCC66;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #2D2D2D;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Service Provider Analytics Page -->
+    <div id="analyticsPage" class="container active">
+        <h2>Service Provider Analytics</h2>
+        <div class="box">Requests<br>18921</div>
+        <div class="box">Avg Response Time<br>35min</div>
+        <div class="box">Feedback Score<br>4.5/5</div>
+    </div>
+
+    <!-- Current Statistics Page -->
+    <div id="statisticsPage" class="container">
+        <button class="button" onclick= "window.location.href='log-in.html'">log out</button>
+        <h2>Current Statistics</h2>
+        <div class="box">Active Users<br>121</div>
+        <div class="box">New Requests<br>33</div>
+    </div>
+
+    <!-- User List Page -->
+    <div id="userListPage" class="container">
+        <h2>Members Apllying for the Job</h2>
+        <div class="input-field">
+            <input type="text" placeholder="Enter Name">
+            <button class="button">Search</button>
+        </div>
+        <div class="box">ALI ALNASSIR <button class="button" onclick="showPage('userDetailPage')">View</button></div>
+        <div class="box">ALI AHMED <button class="button">View</button></div>
+        <div class="box">HASSAN HAMED <button class="button">View</button></div>
+        <div class="box">OMAR ALHANI <button class="button">View</button></div>
+        <div class="box">AHMED <button class="button">View</button></div>
+        <div class="box">ABDULLAH <button class="button">View</button></div>
+    </div>
+
+    <!-- User Detail Page -->
+    <div id="userDetailPage" class="container">
+        <h2>10/4/2024 2:42PM</h2>
+        <div class="box">
+            <strong>Info:</strong><br>
+            Name: ALI ALNASSIR<br>
+            Email: Assister@A.com<br>
+            Phone number: 05********<br>
+            Date&Time: 10/4/2024 2:42PM<br>
+            Location: Eastern Province
+        </div>
+        <div class="box">
+            <strong>Car Info:</strong><br>
+            Toyota 2009 A-Truck<br>
+            Orange ADH 145
+        </div><div class="action-buttons">
+            <button class="button">Reject</button>
+            <button class="button">Accept</button>
+        </div>
+    </div>
+
+    <!-- Assistance Provider Details Page -->
+    <div id="assistanceProviderPage" class="container">
+        <h2>Assistance Provider Details <span style="float: right;">1 2 3</span></h2>
+        <div class="input-field">
+            <span>👤</span>
+            <input type="text" placeholder="First Name">
+        </div>
+        <div class="input-field">
+            <span>👤</span>
+            <input type="text" placeholder="Last Name">
+        </div>
+        <div class="input-field">
+            <span>📞</span>
+            <input type="text" placeholder="Phone Number">
+        </div>
+        <div class="input-field">
+            <span>✉️</span>
+            <input type="text" placeholder="Email">
+        </div>
+        <div class="input-field">
+            <span>⚥</span>
+            <input type="text" placeholder="Gender">
+        </div>
+        <div class="input-field">
+            <span>🆔</span>
+            <input type="text" placeholder="National ID">
+        </div>
+        <button class="next-button" onclick="showPage('carDetailsPage')">Next</button>
+    </div>
+
+    <!-- Assistance Provider Car Details Page -->
+    <div id="carDetailsPage" class="container">
+        <h2>Assistance Provider Car Details <span style="float: right;">1 2 3</span></h2>
+        <div class="input-field">
+            <span>🚗</span>
+            <input type="text" placeholder="Manufacturer">
+        </div>
+        <div class="input-field">
+            <span>📅</span>
+            <input type="text" placeholder="Model Year">
+        </div>
+        <div class="input-field">
+            <span>🚘</span>
+            <input type="text" placeholder="Vehicle Model">
+        </div>
+        <div class="input-field">
+            <span>🎨</span>
+            <input type="text" placeholder="Vehicle Color">
+        </div>
+        <div class="input-field">
+            <span>🔤</span>
+            <input type="text" placeholder="Plate Letters">
+        </div>
+        <div class="input-field">
+            <span>🔢</span>
+            <input type="text" placeholder="Plate Number">
+        </div>
+        <button class="next-button" onclick="showPage('serviceDetailsPage')">Next</button>
+    </div>
+
+    <!-- Assistance Provider Services Page -->
+    <div id="serviceDetailsPage" class="container">
+        <h2>Assistance Provider Services <span style="float: right;">1 2 3</span></h2>
+        <div class="input-field">
+            <select>
+                <option>Service 1</option>
+                <option>Service 2</option>
+                <option>Service 3</option>
+                <option>Service 4</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <select>
+                <option>Service 2</option>
+                <option>Service 3</option>
+                <option>Service 4</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <select>
+                <option>Service 3</option>
+                <option>Service 4</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <select>
+                <option>Service 4</option>
+            </select>
+        </div>
+        <button class="confirm-button">Confirm</button>
+    </div>
+
+    <div class="footer">
+        <div class="footer-icon" onclick="showPage('analyticsPage')">📊</div>
+        <div class="footer-icon" onclick="showPage('statisticsPage')">🏠</div>
+        <div class="footer-icon" onclick="showPage('userListPage')">📋</div>
+        <div class="footer-icon" onclick="showPage('assistanceProviderPage')">➕</div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.getElementById('analyticsPage').classList.remove('active');
+            document.getElementById('statisticsPage').classList.remove('active');
+            document.getElementById('userListPage').classList.remove('active');
+            document.getElementById('userDetailPage').classList.remove('active');
+            document.getElementById('assistanceProviderPage').classList.remove('active');
+            document.getElementById('carDetailsPage').classList.remove('active');
+            document.getElementById('serviceDetailsPage').classList.remove('active');
+
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
