@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AssistMe Login</title>
+        <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    </head>
+    <body>
+        <a href="log-in.HTML" class="back-link"><img src="Images/LogOutButton.png" width="55p" height="55p" ></a>
+        <div class=container>
+            
+            <div class="requestCard" id="requestCard1">
+                <div class="SPsearch-box">
+                    <span>Request 1: <span class="status" style="color:white">Pending</span></span>
+                    <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
+                    <p>Flat tires, 5 KM</p>
+                </div>
+                <div class="SPdetails" style="display: none;">
+                    <span>Request 1: <span class="status" style="color:white">Pending</span></span>
+                    <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
+                    <p>Flat tires, 5 KM</p>
+                    <p>10:06PM 10/3/2024</p>
+                    <p>Battery subscription</p>
+                    <p>Service Provider Name: *******</p>
+                    <p>Service Provider Number: *******</p>
+                    <p>Total cost: *** SAR</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                    <button class="confirm-btn-SP" onclick="accepted('requestCard1')">Accept</button>
+                </div>
+            </div>
+            <div class="SPhotbar">
+                <img src="Images/SearchButton.png" width="85p" height="55p" >
+                <a href="ServiceProviderHome.HTML"><img src="Images/HomeButton.png" width="85p" height="55p" ></a>
+                <a href="ServiceProviderInfo.HTML"><img src="Images/UserButton.png" width="85p" height="55p" ></a>
+            </div>
+        </div>
+        <script>
+            function toggleDetails(cardId) {
+                var card = document.getElementById(cardId);
+                var details = card.querySelector('.SPdetails');
+                var toggleBtn = card.querySelector('.toggle-btn');
+                var mini = card.querySelector(".SPsearch-box")
+                if (details.style.display === 'none') {
+                    mini.style.display = "none"
+                    details.style.display = 'block';
+                    toggleBtn.textContent = '▲';
+                } else {
+                    details.style.display = 'none';
+                    mini.style.display = "block";
+                    toggleBtn.textContent = '▼';
+                }
+            }
+
+            function accepted(cardId) {
+                var card = document.getElementById(cardId);
+                card.style.display ='none';
+            }
+
+        </script>
+    </body>
+</html>
