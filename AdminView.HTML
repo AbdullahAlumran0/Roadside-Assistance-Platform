@@ -160,8 +160,8 @@
             Toyota 2009 A-Truck<br>
             Orange ADH 145
         </div><div class="action-buttons">
-            <button class="button">Reject</button>
-            <button class="button">Accept</button>
+            <button class="button" onclick="RejectEmployee()">Reject</button>
+            <button class="button" onclick="AcceptEmployee()">Accept</button>
         </div>
     </div>
 
@@ -254,7 +254,7 @@
                 <option>Service 4</option>
             </select>
         </div>
-        <button class="confirm-button">Confirm</button>
+        <button class="confirm-button" onclick="NewEmployee()">Confirm</button>
     </div>
 
     <div class="footer">
@@ -265,6 +265,15 @@
     </div>
 
     <script>
+        function RejectEmployee(){
+            alert("Employee Rejected")
+        }
+        function AcceptEmployee(){
+            alert("Employee Accepted")
+        }
+        function NewEmployee(){
+            alert("New Employee Registared")
+        }
         function showPage(pageId) {
             // Hide all pages
             document.getElementById('analyticsPage').classList.remove('active');

@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/HomePage.HTML"
+    "livePreview.defaultPreviewPath": "/HomePage.HTML",
+    "liveServer.settings.multiRootWorkspaceName": "Roadside-Assistance-Platform"
 }

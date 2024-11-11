@@ -112,6 +112,18 @@ function confirmCarDetailsSelection() {
             <p><strong>Plate Number:</strong> ${plateNumber}</p>
         `;
         carDetails.style.display = "block";  // Show the car details section
+        const carDetailsForCar = {
+            manufacturer,
+            modelYear,
+            vehicleModel,
+            vehicleColor,
+            plateLetters,
+            plateNumber
+        };
+    
+        // Save the object to localStorage
+        localStorage.setItem('savedCarDetails', JSON.stringify(carDetailsForCar));
+    
         
         // Hide the modal after selection
         hideCarDetailsModal();
