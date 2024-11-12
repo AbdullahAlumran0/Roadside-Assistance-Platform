@@ -98,7 +98,7 @@ function confirmCarDetailsSelection() {
     const vehicleColor = document.querySelector('input[placeholder="Vehicle Color"]').value;
     const plateLetters = document.querySelector('input[placeholder="Plate Letters"]').value;
     const plateNumber = document.querySelector('input[placeholder="Plate Number"]').value;
-    
+
     // Check if all fields have values
     if (manufacturer && modelYear && vehicleModel && vehicleColor && plateLetters && plateNumber) {
         // Display the selected car details in the appropriate section
@@ -112,6 +112,10 @@ function confirmCarDetailsSelection() {
             <p><strong>Plate Number:</strong> ${plateNumber}</p>
         `;
         carDetails.style.display = "block";  // Show the car details section
+        const saveForLaterCheckbox = document.getElementById("saveForLater");
+
+        if (saveForLaterCheckbox.checked) {
+        // Create the car object
         const carDetailsForCar = {
             manufacturer,
             modelYear,
@@ -120,18 +124,30 @@ function confirmCarDetailsSelection() {
             plateLetters,
             plateNumber
         };
-    
-        // Save the object to localStorage
-        localStorage.setItem('savedCarDetails', JSON.stringify(carDetailsForCar));
-    
-        
+
+        // Retrieve existing cars from localStorage, or initialize an empty array
+        let savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+
+        // Check if the saved cars array already has 4 cars
+        if (savedCars.length >= 4) {
+            alert("You can only save up to 4 cars.");
+            return;
+        }
+
+        // Add the new car details to the array and save it back to localStorage
+        savedCars.push(carDetailsForCar);
+        localStorage.setItem('savedCars', JSON.stringify(savedCars));
+
+        alert("Car saved successfully!");
+    }
         // Hide the modal after selection
         hideCarDetailsModal();
-    } else {
-        // Alert if any field is missing
-        alert("Please fill in all the car details.");
-    }
+    
+    
 }
+}
+
+
 
 
 //Add the new request into request box in home page
@@ -159,3 +175,5 @@ function addNewRequest() {
     // Hide the New Request Modal
     hideNewRequestModal();
 }
+
+
