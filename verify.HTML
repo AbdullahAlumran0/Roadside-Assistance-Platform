@@ -35,7 +35,11 @@
                 // Redirect based on the role
                 if (selectedRole === 'Admin') {
                     window.location.href = 'AdminView.html'; // Admin view page
-                } else {
+                } 
+                else if(selectedRole === 'Assistance Provider') {
+                    window.location.href = 'ServiceProviderHome.html'
+                }
+                else {
                     window.location.href = 'HomePage.html'; // Default page for other roles
                 }
             }

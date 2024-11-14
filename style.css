@@ -25,7 +25,7 @@ body {
   color: #352F2F;
   padding: 20px;
   border-radius: 15px;
-  height: 400px;
+  height: fit-content;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .info-box {
