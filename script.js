@@ -146,30 +146,47 @@ function confirmCarDetailsSelection() {
     
 }
 }
-function confirmSavedCar(){
-    
+function confirmSavedCar() {
     const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
-    
-    
+    const carDetails = document.getElementById('carDetails');  // Assuming carDetails is your container
+
     if (savedCars.length > 0) {
+        let carInfo = '';  // A variable to accumulate the HTML for all cars
         savedCars.forEach((car, index) => {
-            console.log(`Car ${index + 1}:`);
-            console.log(`Manufacturer: ${car.manufacturer}`);
-            console.log(`Model: ${car.vehicleModel}`);
-            console.log(`Model Year: ${car.modelYear}`);
+            carInfo += `
+                Manufacturer    : ${car.manufacturer} <br>
+                
+            <button onclick="goToCarDetails(${index})" style="background-color: #FBC767; color: #352F2F;">Select</button> <br><br>
+            `;
         });
-    carDetails.innerHTML = `
-            <p><strong>Manufacturer: </p>
-            <p><strong>Model Year:</strong> 1</p>
-            <p><strong>Vehicle Model:</strong> 1}</p>
-            <p><strong>Vehicle Color:</strong> $1</p>
-            <p><strong>Plate Letters:</strong> 1</p>
-            <p><strong>Plate Number:</strong> 1</p>
-        `;
-        carDetails.style.display = "block"
+        carDetails.innerHTML = carInfo;  // Update the content with all car details
+        carDetails.style.display = "block";  // Make sure to display the element
+    } else {
+        carDetails.innerHTML = 'No saved cars available.';
+        carDetails.style.display = "block";
     }
+}
+
+// Example of the function you might call when clicking a button
+function goToCarDetails(index) {
+     const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+    const selectedCar = savedCars[index];
+    const carDetails = document.getElementById('carDetails');
+    carDetails.innerHTML = `
+        <h2>Car Details</h2>
+        Manufacturer: ${selectedCar.manufacturer} <br>
+        Model: ${selectedCar.modelYear} <br>
+        Vehicle Model: ${selectedCar.vehicleModel} <br>
+        Vehicle Color: ${selectedCar.vehicleColor} <br>
+        Plate Letter: ${selectedCar.plateLetters} <br>
+        Plate Number: ${selectedCar.plateNumber} <br>
+        
+    `;
 
 }
+
+
+
 
 
 
