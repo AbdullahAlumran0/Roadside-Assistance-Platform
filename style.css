@@ -103,6 +103,25 @@ body {
   margin-bottom: 20px;
 }
 
+.input-field {
+  display: flex;
+  align-items: center;
+  background-color: #352F2F;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0;
+  color: #FFCC66;
+}
+
+.input-field input, .input-field select {
+  background-color: transparent;
+  border: none;
+  color: #FFCC66;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+}
+
 /* Request and Login Cards Styling */
 .login-card, .request-card, .newRequest-card {
   background-color: #FBC767;
