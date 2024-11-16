@@ -45,10 +45,15 @@
 
         <!-- Bottom navigation bar -->
         <footer>
-            <button class="nav-btn">🏠</button>
-            <button class="nav-btn">👤</button>
-            <button class="nav-btn">🚗</button>
-
+            <a href="HomePage.HTML">
+                <img src="Images/home.png" alt="Home" style="width: 20px; height: 30px; object-fit: contain; cursor: pointer;">
+            </a>
+            <a href="log-in.html">
+                <img src="Images/login-24.png" alt="Profile" style="width: 20px; height: 30px; object-fit: contain; cursor: pointer;">
+            </a>
+            <a href="car.html">
+                <img src="Images/car-icon.png" alt="Cars" style="width: 30px; height: 30px; object-fit: contain; cursor: pointer;">
+            </a>
         </footer>
     </div>
 
@@ -71,12 +76,15 @@
             <div class="class="car-detail-item style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
                 <div class="request-header">
                     <span>Car details: </span>
-                    <button class="toggle-btn" style="background-color: #FBC767"; onclick="showCarDetailsModal()">+</button>
+                    <button class="toggle-btn" style="background-color: #FBC767;" onclick="showCarDetailsModal()">+</button>
+                    <!-- New "Select Saved Car" button -->
+                    <button class="select-saveCars" style="background-color: #FBC767; color: #352F2F; margin-left: -5px; font-size: smaller; font: sans-serif;" onclick="confirmSavedCar()">Select Saved Car</button>
                 </div>
                 <div class="details" id="carDetails" style="display: none;">
                     <!-- Service details will be updated dynamically -->
                 </div>
             </div>
+            
             <input type="text" placeholder="Share Location">
             
             <!-- Modal buttons -->
@@ -113,6 +121,8 @@
                     <span>Option 3: VIP Service - SAR 200 <br> Description: Full support with additional benefits.</span>
                 </label>
             </div>
+            
+            
 
             <!-- Modal buttons -->
             <div class="modal-buttons">
@@ -170,6 +180,7 @@
                     <input type="checkbox" id="saveForLater">
                     <label for="saveForLater">Save for later</label>
                 </div>
+                
 
                 <!-- Modal buttons -->
                 <div class="modal-buttons">

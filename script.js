@@ -126,7 +126,7 @@ function confirmCarDetailsSelection() {
         };
 
         // Retrieve existing cars from localStorage, or initialize an empty array
-        let savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+        const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
 
         // Check if the saved cars array already has 4 cars
         if (savedCars.length >= 4) {
@@ -145,6 +145,30 @@ function confirmCarDetailsSelection() {
     
     
 }
+}
+function confirmSavedCar(){
+    
+    const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+    
+    
+    if (savedCars.length > 0) {
+        savedCars.forEach((car, index) => {
+            console.log(`Car ${index + 1}:`);
+            console.log(`Manufacturer: ${car.manufacturer}`);
+            console.log(`Model: ${car.vehicleModel}`);
+            console.log(`Model Year: ${car.modelYear}`);
+        });
+    carDetails.innerHTML = `
+            <p><strong>Manufacturer: </p>
+            <p><strong>Model Year:</strong> 1</p>
+            <p><strong>Vehicle Model:</strong> 1}</p>
+            <p><strong>Vehicle Color:</strong> $1</p>
+            <p><strong>Plate Letters:</strong> 1</p>
+            <p><strong>Plate Number:</strong> 1</p>
+        `;
+        carDetails.style.display = "block"
+    }
+
 }
 
 

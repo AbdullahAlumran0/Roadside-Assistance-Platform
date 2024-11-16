@@ -3,177 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
-    <title> Car </title>
-    <body>
-        <!-- go back button reuse-->
-        <a href="log-in.html" class="back-link"><img src="Images/BackButton.png" width="50p" height="50p" ></a>
-        
-                   
-        <div class="fixed-container">
-          <!-- Arrow Icon -->
-          <img id="arrow-icon" class="arrow-icon" src="Images/ArrowDown.png" alt="Arrow Down" />
-          <h1 class='saved-cars'> Saved cars</h1>
-          <!-- Yellow Card for Car Information -->
-          <div  class="car-info-card">
-              <h3 class="car-name"><span id="displayManufacturer"></span></h3>
-              
-              <!-- Additional car details, initially hidden -->
-              <div id="more-car-info" class="more-info">
-                  
-    <p>Model Year: <span id="displayModelYear"></span></p>
-    <p>Vehicle Model: <span id="displayVehicleModel"></span></p>
-    <p>Vehicle Color: <span id="displayVehicleColor"></span></p>
-    <p>Plate Letters: <span id="displayPlateLetters"></span></p>
-    <p>Plate Number: <span id="displayPlateNumber"></span></p>
-              </div>
-          </div>
-      
-          <!-- Car Element -->
-          <div class="car">
-            <img  src="Images/car.png" alt="Outlined car" />
-          </div>
-      </div>
-      
-           
-            
-
-
-
-    
+    <link rel="stylesheet" href="style.css">
+    <title>Car</title>
 </head>
-<style>
-.fixed-container {
-    width: 1024px;
-    height: 768px;
-    position: relative;
-    margin: 0 auto;
-    overflow: hidden;
-}
+<body>
+    <!-- Go back button -->
+    <a href="HomePage.HTML" class="back-link">
+        <img src="Images/BackButton.png" width="50px" height="50px">
+    </a>
 
-.arrow-icon {
-    position: absolute;
-    width: 30px;
+    <div class="fixed-container">
+        <h1 class="saved-cars">Saved cars</h1>
 
+        <!-- Container for multiple car cards -->
+        <div id="carsContainer" class="cars-container">
+            <!-- Message for no saved cars -->
+            <p id="noCarsMessage" class="no-cars-message">You haven't saved any car yet!</p>
+        </div>
 
-    background-color: #FBC767;
-    left: 900px;
-    top: 72px;
-    z-index: 3;
-    cursor: pointer;
-}
+        <!-- Car Element -->
+        <div class="car">
+            <img src="Images/car.png" alt="Outlined car" />
+        </div>
+    </div>
 
-.car {
-    opacity: 0.3;
-    position: absolute;
-    
-    top: 500x;
-    width: 900px;
-    z-index: -1;
-}
-.saved-cars{
-  position: absolute;
-    top: -5px;
-    left: 50px;
-    width: 150px;
-    padding: 20px;
-    background-color: #FBC767;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-    border: 2px solid #333; /* Border to help visualize the card */
-    color: #352F2F; /* Set text color to #352F2F */
-    font-family: 'Poppins', sans-serif;
-    font-size: large; /* Apply Poppins font */
-}
+    <style>
+        .fixed-container {
+            width: 1024px;
+            height: 768px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+        }
 
-/* Yellow card styling */
+        .car {
+            opacity: 0.3;
+            position: absolute;
+            width: 900px;
+            z-index: -1;
+        }
 
-.car-info-card {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 900px;
-    padding: 20px;
-    background-color: #FBC767;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-    border: 2px solid #333; /* Border to help visualize the card */
-    color: #352F2F; /* Set text color to #352F2F */
-    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
-}
-.car-info-card h3 {
-    text-align: center; /* Align the text to the right */
-    margin: 0; /* Optional: Remove any default margins */
-}
+        .saved-cars {
+            position: absolute;
+            top: 140px;
+            left: 50px;
+            width: 150px;
+            padding: 20px;
+            background-color: #FBC767;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 0;
+            border: 2px solid #333;
+            color: #352F2F;
+            font-family: 'Poppins', sans-serif;
+            font-size: large;
+        }
 
-/* Additional information, initially hidden */
-.more-info {
-    display: none; /* Hidden initially */
-}
+        .cars-container {
+            position: absolute;
+            top: 200px;
+            left: 50px;
+            width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
 
-  /* Media query for smaller screens */
-  @media (max-width: 768px) {
-    .arrow-icon {
-      left: 150px; /* Adjust as needed for smaller screens */
-      top: 5px;
-    }
+        /* Styling for the message displayed when no cars are saved */
+        .no-cars-message {
+            font-size: 24px;
+            color: brown;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin-top: 120px;
+            top: 50;
+            display: none; /* Initially hidden */
+        }
 
-    .car {
-      left: 50px; /* Adjusted left position for smaller screens */
-      top: -150px; /* Adjusted top position for smaller screens */
-      width: 90%; /* Adjust width as needed for better scaling */
-    }
-  }
+        .car-info-card {
+            width: 100%;
+            padding: 20px;
+            background-color: #FBC767;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #333;
+            color: #352F2F;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
 
-  /* Media query for extra small screens */
-  @media (max-width: 480px) {
-    .arrow-icon {
-      left: 100px; /* Further adjust for extra small screens */
-      top: 5px;
-    }
+        .car-info-card h3 {
+            text-align: center;
+            margin: 0;
+        }
 
-    .car {
-      left: 20px; /* Adjusted left position for extra small screens */
-      top: -100px; /* Adjusted top position for extra small screens */
-      width: 100%; /* Max width for smaller screens */
-    }
-  }
-</style>
-<script> 
-  const arrowIcon = document.getElementById("arrow-icon");
-  const moreCarInfo = document.getElementById("more-car-info");
-  
-  // Add click event listener to the arrow icon
-  arrowIcon.addEventListener("click", function() {
-      // Toggle the display style of the additional car info
-      if (moreCarInfo.style.display === "none" || moreCarInfo.style.display === "") {
-          moreCarInfo.style.display = "block"; // Show the additional details
-      } else {
-          moreCarInfo.style.display = "none";  // Hide the additional details
-      }
-  }
-  )
-  // Retrieve saved data from localStorage
-const savedCarDetails = localStorage.getItem('savedCarDetails');
+        .arrow-icon {
+            position: absolute;
+            top: 10px;
+            right: 80px;
+            width: 20px;
+            cursor: pointer;
+            z-index: 2;
+        }
 
-if (savedCarDetails) {
-    // Parse the JSON string back to an object
-    const carDetails = JSON.parse(savedCarDetails);
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: grey;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: small;
+            z-index: 2;
+        }
 
-    // Display or use the data on the second page
-    document.getElementById('displayManufacturer').textContent = carDetails.manufacturer;
-    document.getElementById('displayModelYear').textContent = carDetails.modelYear;
-    document.getElementById('displayVehicleModel').textContent = carDetails.vehicleModel;
-    document.getElementById('displayVehicleColor').textContent = carDetails.vehicleColor;
-    document.getElementById('displayPlateLetters').textContent = carDetails.plateLetters;
-    document.getElementById('displayPlateNumber').textContent = carDetails.plateNumber;
-} else {
-    console.log("No car details found in localStorage.");
-}
+        .more-info {
+            display: none;
+        }
 
-  
-  ;</script>
-  </body>
-  </html>
+        @media (max-width: 768px) {
+            .car {
+                left: 50px;
+                top: -150px;
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .car {
+                left: 20px;
+                top: -100px;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        // Retrieve saved cars from localStorage
+         const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+
+        const carsContainer = document.getElementById('carsContainer');
+        const noCarsMessage = document.getElementById('noCarsMessage');
+
+        if (savedCars.length > 0) {
+            // Hide the "no cars" message
+            noCarsMessage.style.display = "none";
+
+            savedCars.forEach((carDetails, index) => {
+                const carCard = document.createElement('div');
+                carCard.classList.add('car-info-card');
+
+                carCard.innerHTML = `
+                    <h3 class="car-name">${carDetails.manufacturer}</h3>
+                    <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
+                    <button class="delete-button">Delete</button>
+                    
+
+                    <div class="more-info">
+                        <p>Model Year: ${carDetails.modelYear}</p>
+                        <p>Vehicle Model: ${carDetails.vehicleModel}</p>
+                        <p>Vehicle Color: ${carDetails.vehicleColor}</p>
+                        <p>Plate Letters: ${carDetails.plateLetters}</p>
+                        <p>Plate Number: ${carDetails.plateNumber}</p>
+                    </div>
+                `;
+
+                carsContainer.appendChild(carCard);
+
+                const arrowIcon = carCard.querySelector('.arrow-icon');
+                const moreInfo = carCard.querySelector('.more-info');
+                arrowIcon.addEventListener("click", function() {
+                    moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
+                });
+
+                // Delete button functionality
+                const deleteButton = carCard.querySelector('.delete-button');
+                deleteButton.addEventListener('click', function() {
+                    // Remove the car from the savedCars array and update localStorage
+                    savedCars.splice(index, 1);
+                    localStorage.setItem('savedCars', JSON.stringify(savedCars));
+                    
+                    // Remove the car card from the DOM
+                    carCard.remove();
+
+                    // Show the "no cars" message if the last car was deleted
+                    if (savedCars.length === 0) {
+                        noCarsMessage.style.display = "block";
+                    }
+                });
+            });
+        } else {
+            // Display the "no cars" message
+            noCarsMessage.style.display = "block";
+        }
+        
+    </script>
+</body>
+</html>
