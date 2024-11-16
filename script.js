@@ -126,7 +126,7 @@ function confirmCarDetailsSelection() {
         };
 
         // Retrieve existing cars from localStorage, or initialize an empty array
-        let savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+        const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
 
         // Check if the saved cars array already has 4 cars
         if (savedCars.length >= 4) {
@@ -146,6 +146,47 @@ function confirmCarDetailsSelection() {
     
 }
 }
+function confirmSavedCar() {
+    const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+    const carDetails = document.getElementById('carDetails');  // Assuming carDetails is your container
+
+    if (savedCars.length > 0) {
+        let carInfo = '';  // A variable to accumulate the HTML for all cars
+        savedCars.forEach((car, index) => {
+            carInfo += `
+                Manufacturer    : ${car.manufacturer} <br>
+                
+            <button onclick="goToCarDetails(${index})" style="background-color: #FBC767; color: #352F2F;">Select</button> <br><br>
+            `;
+        });
+        carDetails.innerHTML = carInfo;  // Update the content with all car details
+        carDetails.style.display = "block";  // Make sure to display the element
+    } else {
+        carDetails.innerHTML = 'No saved cars available.';
+        carDetails.style.display = "block";
+    }
+}
+
+// Example of the function you might call when clicking a button
+function goToCarDetails(index) {
+     const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
+    const selectedCar = savedCars[index];
+    const carDetails = document.getElementById('carDetails');
+    carDetails.innerHTML = `
+        <h2>Car Details</h2>
+        Manufacturer: ${selectedCar.manufacturer} <br>
+        Model: ${selectedCar.modelYear} <br>
+        Vehicle Model: ${selectedCar.vehicleModel} <br>
+        Vehicle Color: ${selectedCar.vehicleColor} <br>
+        Plate Letter: ${selectedCar.plateLetters} <br>
+        Plate Number: ${selectedCar.plateNumber} <br>
+        
+    `;
+
+}
+
+
+
 
 
 
