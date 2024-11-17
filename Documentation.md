@@ -16,3 +16,21 @@ Car Management:
 Save car information for future requests.
 Add or delete cars via the car.html page.
 Simplify the process by selecting the "Save Car" option to store car details permanently, avoiding the need to re-enter information.
+
+
+ServiceProviderHome.HTML: Displays service requests for providers.
+Header: Contains a logout button linking to the login page.
+Request Cards: Each card represents a service request with collapsible details.
+JavaScript: Handles toggling details and updating request statuses.
+Footer Navigation: Links to search and user information pages.
+
+
+ServiceProviderInfo.HTML: Shows the provider's personal and vehicle information.
+Info Sections: Personal details, car information, and highlights.
+Footer Navigation: Links to home and search pages.
+
+
+ServiceProviderSearch.HTML: Allows providers to view and accept new service requests.
+Search Results: Displays pending requests with expandable details.
+JavaScript: Handles toggling details and accepting requests.
+Footer Navigation: Links to home and user information pages.
