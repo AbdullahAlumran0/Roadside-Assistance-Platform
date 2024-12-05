@@ -1,220 +1,115 @@
-// Toggle request details
-document.querySelectorAll('.toggle-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const details = button.parentElement.nextElementSibling;
-        const isVisible = !details.hidden;
-        details.hidden = isVisible;
-        button.setAttribute('aria-expanded', !isVisible);
-    });
-});
+// API Base URL
+const API_BASE_URL = 'http://localhost:3000/api';
 
-// Open and close the New Request Modal
-const newRequestModal = document.getElementById('newRequestModal');
-const openModalButton = document.getElementById('openNewRequestModal');
-const closeModalButton = document.getElementById('cancelRequest');
+// Fetch and display all cars from the server
+async function fetchAndDisplayCars() {
+    const carDetails = document.getElementById('carDetails');
+    carDetails.innerHTML = ''; // Clear existing content
 
-openModalButton.addEventListener('click', () => {
-    newRequestModal.style.display = 'flex';
-    newRequestModal.setAttribute('aria-hidden', 'false');
-});
+    try {
+        const response = await fetch(`${API_BASE_URL}/cars`);
+        const cars = await response.json();
 
-closeModalButton.addEventListener('click', () => {
-    newRequestModal.style.display = 'none';
-    newRequestModal.setAttribute('aria-hidden', 'true');
-});
-
-// Close modal if clicked outside of content area
-window.addEventListener('click', (event) => {
-    if (event.target === newRequestModal) {
-        newRequestModal.style.display = 'none';
-        newRequestModal.setAttribute('aria-hidden', 'true');
-    }
-});
-
-
-// Toggle details for request cards
-function toggleDetails(cardId) {
-    var card = document.getElementById(cardId);
-    var details = card.querySelector('.details');
-    var toggleBtn = card.querySelector('.toggle-btn');
-    
-    if (details.style.display === 'none') {
-        details.style.display = 'block';
-        toggleBtn.textContent = '▲';
-    } else {
-        details.style.display = 'none';
-        toggleBtn.textContent = '▼';
-    }
-}
-
-// Show and hide the New Request modal
-function showNewRequestModal() {
-    document.getElementById("newRequestModal").style.display = "flex";
-}
-
-function hideNewRequestModal() {
-    document.getElementById("newRequestModal").style.display = "none";
-}
-
-// Show and hide the Service Offers modal
-function showServiceOffersModal() {
-    document.getElementById("serviceOffersModal").style.display = "flex";
-}
-
-function hideServiceOffersModal() {
-    document.getElementById("serviceOffersModal").style.display = "none";
-}
-
-// Show and hide the Car Details Offers modal
-function showCarDetailsModal() {
-    document.getElementById("carDetailsModal").style.display = "flex";
-}
-
-function hideCarDetailsModal() {
-    document.getElementById("carDetailsModal").style.display = "none";
-}
-
-// Confirm service selection and display details in Service 1 card
-function confirmServiceSelection() {
-    const selectedOption = document.querySelector('input[name="serviceOption"]:checked');
-    if (selectedOption) {
-        // Display the selected service details in Service 1 card
-        const service1Details = document.getElementById("service1Details");
-        service1Details.innerHTML = `<p>${selectedOption.value}</p>`;
-        service1Details.style.display = "block";
-        
-        hideServiceOffersModal();
-    } else {
-        alert("Please select a service option.");
-    }
-}
-
-// Function to confirm car details selection and display it
-function confirmCarDetailsSelection() {
-    // Get the values from the input fields
-    const manufacturer = document.querySelector('input[placeholder="Manufacturer"]').value;
-    const modelYear = document.querySelector('input[placeholder="Model Year"]').value;
-    const vehicleModel = document.querySelector('input[placeholder="Vehicle Model"]').value;
-    const vehicleColor = document.querySelector('input[placeholder="Vehicle Color"]').value;
-    const plateLetters = document.querySelector('input[placeholder="Plate Letters"]').value;
-    const plateNumber = document.querySelector('input[placeholder="Plate Number"]').value;
-
-    // Check if all fields have values
-    if (manufacturer && modelYear && vehicleModel && vehicleColor && plateLetters && plateNumber) {
-        // Display the selected car details in the appropriate section
-        const carDetails = document.getElementById("carDetails");
-        carDetails.innerHTML = `
-            <p><strong>Manufacturer:</strong> ${manufacturer}</p>
-            <p><strong>Model Year:</strong> ${modelYear}</p>
-            <p><strong>Vehicle Model:</strong> ${vehicleModel}</p>
-            <p><strong>Vehicle Color:</strong> ${vehicleColor}</p>
-            <p><strong>Plate Letters:</strong> ${plateLetters}</p>
-            <p><strong>Plate Number:</strong> ${plateNumber}</p>
-        `;
-        carDetails.style.display = "block";  // Show the car details section
-        const saveForLaterCheckbox = document.getElementById("saveForLater");
-
-        if (saveForLaterCheckbox.checked) {
-        // Create the car object
-        const carDetailsForCar = {
-            manufacturer,
-            modelYear,
-            vehicleModel,
-            vehicleColor,
-            plateLetters,
-            plateNumber
-        };
-
-        // Retrieve existing cars from localStorage, or initialize an empty array
-        const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
-
-        // Check if the saved cars array already has 4 cars
-        if (savedCars.length >= 4) {
-            alert("You can only save up to 4 cars.");
-            return;
+        if (cars.length > 0) {
+            cars.forEach((car, index) => {
+                const carInfo = `
+                    Manufacturer: ${car.manufacturer} <br>
+                    Model Year: ${car.modelYear} <br>
+                    Vehicle Model: ${car.vehicleModel} <br>
+                    Vehicle Color: ${car.vehicleColor} <br>
+                    Plate Letters: ${car.plateLetters} <br>
+                    Plate Number: ${car.plateNumber} <br>
+                    <button onclick="goToCarDetails(${car._id})" style="background-color: #FBC767; color: #352F2F;">Select</button> <br><br>
+                `;
+                carDetails.innerHTML += carInfo;
+            });
+        } else {
+            carDetails.innerHTML = 'No saved cars available.';
         }
 
-        // Add the new car details to the array and save it back to localStorage
-        savedCars.push(carDetailsForCar);
-        localStorage.setItem('savedCars', JSON.stringify(savedCars));
-
-        alert("Car saved successfully!");
+        carDetails.style.display = 'block';
+    } catch (error) {
+        console.error('Error fetching cars:', error);
+        carDetails.innerHTML = 'Error loading car details.';
     }
-        // Hide the modal after selection
-        hideCarDetailsModal();
-    
-    
 }
-}
-function confirmSavedCar() {
-    const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
-    const carDetails = document.getElementById('carDetails');  // Assuming carDetails is your container
 
-    if (savedCars.length > 0) {
-        let carInfo = '';  // A variable to accumulate the HTML for all cars
-        savedCars.forEach((car, index) => {
-            carInfo += `
-                Manufacturer    : ${car.manufacturer} <br>
-                
-            <button onclick="goToCarDetails(${index})" style="background-color: #FBC767; color: #352F2F;">Select</button> <br><br>
+// Fetch user info based on userID
+async function fetchUserInfo(userID) {
+    const userDetailsDiv = document.getElementById('userDetails');
+    userDetailsDiv.innerHTML = ''; // Clear previous details
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/${userID}`);
+
+        if (response.ok) {
+            const user = await response.json();
+            userDetailsDiv.innerHTML = `
+                Name: ${user.name} <br>
+                Phone: ${user.phone} <br>
+                Email: ${user.email} <br>
+                Car Details: <br>
+                ${user.carDetails.map(car => `
+                    Manufacturer: ${car.manufacturer} <br>
+                    Model Year: ${car.modelYear} <br>
+                    Vehicle Model: ${car.vehicleModel} <br>
+                    Vehicle Color: ${car.vehicleColor} <br>
+                    Plate Letters: ${car.plateLetters} <br>
+                    Plate Number: ${car.plateNumber} <br><br>
+                `).join('')}
             `;
-        });
-        carDetails.innerHTML = carInfo;  // Update the content with all car details
-        carDetails.style.display = "block";  // Make sure to display the element
-    } else {
-        carDetails.innerHTML = 'No saved cars available.';
-        carDetails.style.display = "block";
+        } else {
+            userDetailsDiv.innerHTML = 'User not found';
+        }
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        userDetailsDiv.innerHTML = 'Error loading user details.';
     }
 }
 
-// Example of the function you might call when clicking a button
-function goToCarDetails(index) {
-     const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
-    const selectedCar = savedCars[index];
+// View car details when selected
+function goToCarDetails(carId) {
     const carDetails = document.getElementById('carDetails');
-    carDetails.innerHTML = `
-        <h2>Car Details</h2>
-        Manufacturer: ${selectedCar.manufacturer} <br>
-        Model: ${selectedCar.modelYear} <br>
-        Vehicle Model: ${selectedCar.vehicleModel} <br>
-        Vehicle Color: ${selectedCar.vehicleColor} <br>
-        Plate Letter: ${selectedCar.plateLetters} <br>
-        Plate Number: ${selectedCar.plateNumber} <br>
-        
-    `;
-
+    carDetails.innerHTML = `Fetching car details for ID: ${carId}...`;
+    // Optionally, fetch the specific car by ID for detailed information
 }
 
-
-
-
-
-
-
-//Add the new request into request box in home page
-function addNewRequest() {
-    // Get the request box and the new request card
+// Fetch and display all requests from the server
+async function fetchAndDisplayRequests() {
     const requestBox = document.querySelector('.request-box');
-    const newRequestCard = document.querySelector('.newRequest-card');
+    requestBox.innerHTML = ''; // Clear existing content
 
-    // Create a new request card element
-    const newCard = document.createElement('div');
-    newCard.className = 'request-card';
-    newCard.innerHTML = `
-        <div class="request-header">
-            <span>Request: <span class="status">Pending</span></span>
-            <button class="toggle-btn" onclick="toggleDetails('newRequestCard')">▼</button>
-        </div>
-        <div class="details" style="display: none;">
-            <p>Service details will be updated dynamically</p>
-        </div>
-    `;
+    try {
+        const response = await fetch(`${API_BASE_URL}/requests`);
+        const requests = await response.json();
 
-    // Insert the new card before the new request card
-    requestBox.insertBefore(newCard, newRequestCard);
-
-    // Hide the New Request Modal
-    hideNewRequestModal();
+        if (requests.length > 0) {
+            requests.forEach(request => {
+                const requestCard = `
+                    <div class="request-card">
+                        <div class="request-header">
+                            <span>Request: <span class="status">${request.status}</span></span>
+                            <button class="toggle-btn" onclick="toggleDetails('${request._id}')">▼</button>
+                        </div>
+                        <div class="details" style="display: none;">
+                            <p>${request.details}</p>
+                        </div>
+                    </div>
+                `;
+                requestBox.innerHTML += requestCard;
+            });
+        } else {
+            requestBox.innerHTML = '<p>No requests found.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching requests:', error);
+        requestBox.innerHTML = '<p>Error loading requests.</p>';
+    }
 }
 
-
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAndDisplayCars();
+    fetchAndDisplayRequests();
+    fetchUserInfo('someUserID'); // Replace 'someUserID' with the actual user ID
+});
