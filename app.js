@@ -38,6 +38,17 @@ const requestSchema = new mongoose.Schema({
 
 const Request = mongoose.model('Request', requestSchema);
 
+// Define the User schema and model
+const userSchema = new mongoose.Schema({
+    userID: { type: String, required: true },
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+    carDetails: [carSchema], // Embed car schema for user-specific cars
+});
+
+const User = mongoose.model('User', userSchema);
+
 // API Routes
 
 // 1. Create a new car
@@ -101,6 +112,22 @@ app.patch('/api/requests/:id', async (req, res) => {
         res.status(200).json({ message: 'Request updated successfully', updatedRequest });
     } catch (error) {
         res.status(500).json({ message: 'Error updating request', error });
+    }
+});
+
+// 6. Fetch user information by userID
+app.get('/api/users/:userID', async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const user = await User.findOne({ userID });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user information', error });
     }
 });
 
