@@ -1,110 +1,115 @@
-// Base API URL
-const API_BASE_URL = "http://localhost:3000/api";
+// API Base URL
+const API_BASE_URL = 'http://localhost:3000/api';
 
-// Function to fetch user information by userID
-async function fetchUserById(userID) {
+// Fetch and display all cars from the server
+async function fetchAndDisplayCars() {
+    const carDetails = document.getElementById('carDetails');
+    carDetails.innerHTML = ''; // Clear existing content
+
     try {
-        const response = await fetch(`${API_BASE_URL}/users/${userID}`);
-        if (!response.ok) {
-            throw new Error(`User not found (Status: ${response.status})`);
-        }
-        const user = await response.json();
-        console.log("User Info:", user);
-        displayUserInfo(user);
-    } catch (error) {
-        console.error("Error fetching user info:", error.message);
-        alert("Error fetching user information. Please check the user ID.");
-    }
-}
+        const response = await fetch(`${API_BASE_URL}/cars`);
+        const cars = await response.json();
 
-// Function to display user information in the UI
-function displayUserInfo(user) {
-    const userInfoDiv = document.getElementById("user-info");
-    userInfoDiv.innerHTML = `
-        <h3>User Details</h3>
-        <p><strong>Name:</strong> ${user.name}</p>
-        <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Phone:</strong> ${user.phone}</p>
-        <h4>Car Details:</h4>
-        <ul>
-            ${user.carDetails
-                .map(
-                    (car) =>
-                        `<li>${car.manufacturer} ${car.vehicleModel} (${car.modelYear}) - ${car.vehicleColor} [${car.plateLetters}-${car.plateNumber}]</li>`
-                )
-                .join("")}
-        </ul>
-    `;
-}
-
-// Function to add a new car
-async function addNewCar(carData) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/cars`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(carData),
-        });
-        const result = await response.json();
-        if (response.ok) {
-            alert("Car added successfully!");
-            console.log("Car:", result.car);
+        if (cars.length > 0) {
+            cars.forEach((car, index) => {
+                const carInfo = `
+                    Manufacturer: ${car.manufacturer} <br>
+                    Model Year: ${car.modelYear} <br>
+                    Vehicle Model: ${car.vehicleModel} <br>
+                    Vehicle Color: ${car.vehicleColor} <br>
+                    Plate Letters: ${car.plateLetters} <br>
+                    Plate Number: ${car.plateNumber} <br>
+                    <button onclick="goToCarDetails(${car._id})" style="background-color: #FBC767; color: #352F2F;">Select</button> <br><br>
+                `;
+                carDetails.innerHTML += carInfo;
+            });
         } else {
-            throw new Error(result.message);
+            carDetails.innerHTML = 'No saved cars available.';
         }
+
+        carDetails.style.display = 'block';
     } catch (error) {
-        console.error("Error adding car:", error.message);
-        alert("Error adding car. Please try again.");
+        console.error('Error fetching cars:', error);
+        carDetails.innerHTML = 'Error loading car details.';
     }
 }
 
-// Function to create a new service request
-async function createServiceRequest(requestData) {
+// Fetch user info based on userID
+async function fetchUserInfo(userID) {
+    const userDetailsDiv = document.getElementById('userDetails');
+    userDetailsDiv.innerHTML = ''; // Clear previous details
+
     try {
-        const response = await fetch(`${API_BASE_URL}/requests`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestData),
-        });
-        const result = await response.json();
+        const response = await fetch(`${API_BASE_URL}/user/${userID}`);
+
         if (response.ok) {
-            alert("Service request created successfully!");
-            console.log("Request:", result.request);
+            const user = await response.json();
+            userDetailsDiv.innerHTML = `
+                Name: ${user.name} <br>
+                Phone: ${user.phone} <br>
+                Email: ${user.email} <br>
+                Car Details: <br>
+                ${user.carDetails.map(car => `
+                    Manufacturer: ${car.manufacturer} <br>
+                    Model Year: ${car.modelYear} <br>
+                    Vehicle Model: ${car.vehicleModel} <br>
+                    Vehicle Color: ${car.vehicleColor} <br>
+                    Plate Letters: ${car.plateLetters} <br>
+                    Plate Number: ${car.plateNumber} <br><br>
+                `).join('')}
+            `;
         } else {
-            throw new Error(result.message);
+            userDetailsDiv.innerHTML = 'User not found';
         }
     } catch (error) {
-        console.error("Error creating service request:", error.message);
-        alert("Error creating service request. Please try again.");
+        console.error('Error fetching user info:', error);
+        userDetailsDiv.innerHTML = 'Error loading user details.';
     }
 }
 
-// Event Listener for Fetch User by ID
-document.getElementById("fetch-user-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const userID = document.getElementById("user-id").value;
-    fetchUserById(userID);
-});
+// View car details when selected
+function goToCarDetails(carId) {
+    const carDetails = document.getElementById('carDetails');
+    carDetails.innerHTML = `Fetching car details for ID: ${carId}...`;
+    // Optionally, fetch the specific car by ID for detailed information
+}
 
-// Event Listener for Adding New Car
-document.getElementById("add-car-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const carData = {
-        manufacturer: document.getElementById("car-manufacturer").value,
-        modelYear: document.getElementById("car-model-year").value,
-        vehicleModel: document.getElementById("car-model").value,
-        vehicleColor: document.getElementById("car-color").value,
-        plateLetters: document.getElementById("car-plate-letters").value,
-        plateNumber: document.getElementById("car-plate-number").value,
-    };
-    addNewCar(carData);
-});
+// Fetch and display all requests from the server
+async function fetchAndDisplayRequests() {
+    const requestBox = document.querySelector('.request-box');
+    requestBox.innerHTML = ''; // Clear existing content
 
-// Event Listener for Creating a Service Request
-document.getElementById("create-request-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const requestData = {
-        details: document.getElementById("request-details").value,
-    };
-    createServiceRequest(requestData);
+    try {
+        const response = await fetch(`${API_BASE_URL}/requests`);
+        const requests = await response.json();
+
+        if (requests.length > 0) {
+            requests.forEach(request => {
+                const requestCard = `
+                    <div class="request-card">
+                        <div class="request-header">
+                            <span>Request: <span class="status">${request.status}</span></span>
+                            <button class="toggle-btn" onclick="toggleDetails('${request._id}')">▼</button>
+                        </div>
+                        <div class="details" style="display: none;">
+                            <p>${request.details}</p>
+                        </div>
+                    </div>
+                `;
+                requestBox.innerHTML += requestCard;
+            });
+        } else {
+            requestBox.innerHTML = '<p>No requests found.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching requests:', error);
+        requestBox.innerHTML = '<p>Error loading requests.</p>';
+    }
+}
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAndDisplayCars();
+    fetchAndDisplayRequests();
+    fetchUserInfo('someUserID'); // Replace 'someUserID' with the actual user ID
 });
