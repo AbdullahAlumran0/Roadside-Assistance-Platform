@@ -11,13 +11,8 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(cors()); // Enable CORS for cross-origin requests
 
 // Connect to MongoDB using environment variable for the connection string
-mongoose
-    .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/RoadsideAssistanceDB', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log('Error connecting to MongoDB: ', err));
+mongoose.connect('mongodb://localhost:27017/RoadsideAssistanceDB')
+
 
 // Define the Car schema and model
 const carSchema = new mongoose.Schema({
