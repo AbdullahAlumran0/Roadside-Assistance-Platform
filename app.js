@@ -10,7 +10,7 @@ app.use(cors()); // Enable CORS for cross-origin requests
 
 // Connect to MongoDB
 mongoose
-    .connect('mongodb://localhost:27017/roadside-assistance', {
+    .connect('mongodb://localhost:27017/myDatabase', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
