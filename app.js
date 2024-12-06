@@ -3,6 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
+// Load environment variables
 dotenv.config();
 
 // Initialize app and middleware
@@ -10,9 +12,10 @@ const app = express();
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors()); // Enable CORS for cross-origin requests
 
-// Connect to MongoDB using environment variable for the connection string
-mongoose.connect('mongodb://localhost:27017/RoadsideAssistanceDB')
-
+// Connect to MongoDB using the URI from the environment variable
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log('Error connecting to MongoDB:', err));
 
 // Define the Car schema and model
 const carSchema = new mongoose.Schema({
