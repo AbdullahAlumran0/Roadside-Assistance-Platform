@@ -14,8 +14,8 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => console.error('Error connecting to MongoDB:', err));
+    .then(() => console.log('Connected to MongoDB on localhost:27017'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Define the Car schema and model
 const carSchema = new mongoose.Schema({
