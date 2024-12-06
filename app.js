@@ -1,21 +1,23 @@
 // Import required modules
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Initialize app and middleware
 const app = express();
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors()); // Enable CORS for cross-origin requests
 
-// Connect to MongoDB
+// Connect to MongoDB using environment variable for the connection string
 mongoose
-    .connect('mongodb://localhost:27017/myDatabase', {
+    .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/RoadsideAssistanceDB', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log('Connected to MongoDB on localhost:27017'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log('Error connecting to MongoDB: ', err));
 
 // Define the Car schema and model
 const carSchema = new mongoose.Schema({
@@ -40,7 +42,7 @@ const Request = mongoose.model('Request', requestSchema);
 
 // Define the User schema and model
 const userSchema = new mongoose.Schema({
-    userID: { type: String, required: true },
+    userID: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     phone: { type: String, required: true },
     email: { type: String, required: true },
@@ -140,8 +142,31 @@ app.get('/api/user/:userID', async (req, res) => {
     }
 });
 
+// 7. Add a car to a user's carDetails (assuming the car is created first)
+app.post('/api/user/:userID/cars', async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const car = new Car(req.body);
+
+        // Save the car details in the user
+        const user = await User.findOneAndUpdate(
+            { userID },
+            { $push: { carDetails: car } },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(201).json({ message: 'Car added to user successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding car to user', error });
+    }
+});
+
 // Start the server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
