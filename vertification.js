@@ -14,7 +14,7 @@ export async function createVerification(number) {
       .services(serviceSid)
       .verifications.create({
         channel: 'sms',
-        to: "+966"+ number.slice(1),  
+        to: "+966"+ number.slice(1),  // to make it on +966 format 
       });
   } catch (error) {
     console.error('Error creating verification:', error.message);
