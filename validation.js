@@ -9,14 +9,12 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = twilio(accountSid, authToken);
 
-export async function validateCode(codeEnteredByUser) {
+export async function validateCode(codeEnteredByUser,phoneNum) {
     try {
-    //   const userNumber = localStorage.getItem('userNumber', "+966");
-    //   const vertificationSID = localStorage.getItem('vertificationSID');
       const verificationCheck = await client.verify.v2
         .services(serviceSid)
         .verificationChecks.create({
-          to: userNumber,  
+          to: phoneNum,  //+966 format
           code: codeEnteredByUser,  
         });
         

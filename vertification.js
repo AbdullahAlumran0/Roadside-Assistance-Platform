@@ -5,6 +5,7 @@ import twilio  from "twilio";
 const serviceSid = process.env.TWILIO_SERVICE_SID;  
 const accountSid = process.env.TWILIO_ACCOUNT_SID;  
 const authToken = process.env.TWILIO_AUTH_TOKEN;   
+
 const client = twilio(accountSid, authToken);
 
 export async function createVerification(number) {
@@ -15,14 +16,8 @@ export async function createVerification(number) {
         channel: 'sms',
         to: "+966"+ number.slice(1),  
       });
-      //localStorage.setItem('userNumber', "+966"+ number.slice(1));
-      //localStorage.setItem('vertificationSID', verification.sid);
-    console.log('Verification status:', verification.status,verification.sid);
   } catch (error) {
     console.error('Error creating verification:', error.message);
   }
   
 }
-
-
-
