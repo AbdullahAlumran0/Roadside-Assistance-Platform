@@ -1,4 +1,3 @@
-// Import required modules
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -11,6 +10,7 @@ dotenv.config();
 const app = express();
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors()); // Enable CORS for cross-origin requests
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/roadside-assistance';
 
 // Connect to MongoDB using the URI from the environment variable
 mongoose.connect(process.env.MONGO_URI)
@@ -168,3 +168,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+

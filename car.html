@@ -21,7 +21,7 @@
             <p id="noCarsMessage" class="no-cars-message">You haven't saved any car yet!</p>
         </div>
         <!-- Add New Car Button -->
-    <button id="addCarButton" class="add-car-button">Add New Car</button>
+        <button id="addCarButton" class="add-car-button">Add New Car</button>
 
         <!-- Car Element -->
         <div class="car">
@@ -268,133 +268,117 @@
             }
         }
     </style>
-    
-    
-    
-    
-    
-    
 
     <script>
-        // Retrieve saved cars from localStorage
-         const savedCars = JSON.parse(localStorage.getItem('savedCars')) || [];
-
         const carsContainer = document.getElementById('carsContainer');
         const noCarsMessage = document.getElementById('noCarsMessage');
+        const addCarButton = document.getElementById('addCarButton');
 
-        if (savedCars.length > 0) {
-            // Hide the "no cars" message
-            noCarsMessage.style.display = "none";
+        // Fetch cars from the backend
+        async function fetchCars() {
+            try {
+                const response = await fetch('/api/cars');
+                const cars = await response.json();
+                if (cars.length > 0) {
+                    noCarsMessage.style.display = "none";
+                    cars.forEach(carDetails => createCarCard(carDetails));
+                } else {
+                    noCarsMessage.style.display = "block";
+                }
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+            }
+        }
 
-            savedCars.forEach((carDetails, index) => {
-                const carCard = document.createElement('div');
-                carCard.classList.add('car-info-card');
+        // Create car card element
+        function createCarCard(carDetails) {
+            const carCard = document.createElement('div');
+            carCard.classList.add('car-info-card');
 
-                carCard.innerHTML = `
-                    <h3 class="car-name">${carDetails.manufacturer}</h3>
-                    <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
-                    <button class="delete-button">Delete</button>
-                    
+            carCard.innerHTML = `
+                <h3 class="car-name">${carDetails.manufacturer}</h3>
+                <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
+                <button class="delete-button">Delete</button>
 
-                    <div class="more-info">
+                <div class="more-info">
                     <h3>Car Details</h3>
                     <p><strong>Model Year:</strong> ${carDetails.modelYear}</p>
                     <p><strong>Vehicle Model:</strong> ${carDetails.vehicleModel}</p>
                     <p><strong>Vehicle Color:</strong> ${carDetails.vehicleColor}</p>
                     <p><strong>Plate Letters:</strong> ${carDetails.plateLetters}</p>
                     <p><strong>Plate Number:</strong> ${carDetails.plateNumber}</p>
-                    </div>
-                `;
+                </div>
+            `;
 
-                carsContainer.appendChild(carCard);
+            carsContainer.appendChild(carCard);
 
-                const arrowIcon = carCard.querySelector('.arrow-icon');
-                const moreInfo = carCard.querySelector('.more-info');
-                arrowIcon.addEventListener("click", function() {
-                    moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
+            // Toggle more info visibility
+            const arrowIcon = carCard.querySelector('.arrow-icon');
+            const moreInfo = carCard.querySelector('.more-info');
+            arrowIcon.addEventListener("click", function() {
+                moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
+            });
+
+            // Delete button functionality
+            const deleteButton = carCard.querySelector('.delete-button');
+            deleteButton.addEventListener('click', () => deleteCar(carDetails.id, carCard));
+        }
+
+        // Delete a car from the backend
+        async function deleteCar(carId, carCard) {
+            try {
+                const response = await fetch(`/api/cars/${carId}`, {
+                    method: 'DELETE',
                 });
-
-                // Delete button functionality
-                const deleteButton = carCard.querySelector('.delete-button');
-                deleteButton.addEventListener('click', function() {
-                    // Remove the car from the savedCars array and update localStorage
-                    savedCars.splice(index, 1);
-                    localStorage.setItem('savedCars', JSON.stringify(savedCars));
-                    
-                    // Remove the car card from the DOM
+                if (response.ok) {
                     carCard.remove();
-
-                    // Show the "no cars" message if the last car was deleted
-                    if (savedCars.length === 0) {
+                    const cars = await fetchCars();
+                    if (cars.length === 0) {
                         noCarsMessage.style.display = "block";
                     }
-                });
-            });
-        } else {
-            // Display the "no cars" message
-            noCarsMessage.style.display = "block";
+                } else {
+                    alert("Failed to delete the car.");
+                }
+            } catch (error) {
+                console.error('Error deleting car:', error);
+            }
         }
-        const addCarButton = document.getElementById('addCarButton');
 
-// Function to prompt user for new car details
-addCarButton.addEventListener('click', function() {
-    const newCar = {
-        manufacturer: prompt("Enter Manufacturer:", "Toyota"),
-        modelYear: prompt("Enter Model Year:", "2022"),
-        vehicleModel: prompt("Enter Vehicle Model:", "Camry"),
-        vehicleColor: prompt("Enter Vehicle Color:", "Red"),
-        plateLetters: prompt("Enter Plate Letters:", "ABC"),
-        plateNumber: prompt("Enter Plate Number:", "1234")
-    };
+        // Add a new car
+        addCarButton.addEventListener('click', async function() {
+            const newCar = {
+                manufacturer: prompt("Enter Manufacturer:", "Toyota"),
+                modelYear: prompt("Enter Model Year:", "2022"),
+                vehicleModel: prompt("Enter Vehicle Model:", "Camry"),
+                vehicleColor: prompt("Enter Vehicle Color:", "Red"),
+                plateLetters: prompt("Enter Plate Letters:", "ABC"),
+                plateNumber: prompt("Enter Plate Number:", "1234")
+            };
 
-    if (newCar.manufacturer && newCar.modelYear && newCar.vehicleModel) {
-        savedCars.push(newCar);
-        localStorage.setItem('savedCars', JSON.stringify(savedCars));
+            if (newCar.manufacturer && newCar.modelYear && newCar.vehicleModel) {
+                try {
+                    const response = await fetch('/api/cars', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(newCar),
+                    });
 
-        // Remove "no cars" message if visible
-        noCarsMessage.style.display = "none";
-
-        // Create a new car card and append it to the container
-        const carCard = document.createElement('div');
-        carCard.classList.add('car-info-card');
-
-        carCard.innerHTML = `
-            <h3 class="car-name">${newCar.manufacturer}</h3>
-            <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
-            <button class="delete-button">Delete</button>
-
-            <div class="more-info">
-                <h3>Car Details</h3>
-                <p><strong>Model Year:</strong> ${newCar.modelYear}</p>
-                <p><strong>Vehicle Model:</strong> ${newCar.vehicleModel}</p>
-                <p><strong>Vehicle Color:</strong> ${newCar.vehicleColor}</p>
-                <p><strong>Plate Letters:</strong> ${newCar.plateLetters}</p>
-                <p><strong>Plate Number:</strong> ${newCar.plateNumber}</p>
-            </div>
-        `;
-
-        carsContainer.appendChild(carCard);
-
-        const arrowIcon = carCard.querySelector('.arrow-icon');
-        const moreInfo = carCard.querySelector('.more-info');
-        arrowIcon.addEventListener("click", function() {
-            moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
+                    const car = await response.json();
+                    createCarCard(car);
+                    noCarsMessage.style.display = "none"; // Hide the "no cars" message
+                } catch (error) {
+                    alert("Failed to add new car");
+                    console.error('Error adding car:', error);
+                }
+            } else {
+                alert("Please fill in all required fields!");
+            }
         });
 
-        const deleteButton = carCard.querySelector('.delete-button');
-        deleteButton.addEventListener('click', function() {
-            const index = savedCars.indexOf(newCar);
-            if (index !== -1) savedCars.splice(index, 1);
-            localStorage.setItem('savedCars', JSON.stringify(savedCars));
-            carCard.remove();
-            if (savedCars.length === 0) noCarsMessage.style.display = "block";
-        });
-    } else {
-        alert("Please fill in all required fields!");
-    }
-});
-
-        
+        // Initial fetch for cars
+        fetchCars();
     </script>
 </body>
 </html>
