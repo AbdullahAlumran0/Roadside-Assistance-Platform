@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Car</title>
+</head>
+<body>
+    <!-- Go back button -->
+    <a href="HomePage.HTML" class="back-link">
+        <img src="Images/BackButton.png" width="50px" height="50px">
+    </a>
+
+    <div class="fixed-container">
+        <h1 class="saved-cars">Saved cars</h1>
+
+        <!-- Container for multiple car cards -->
+        <div id="carsContainer" class="cars-container">
+            <!-- Message for no saved cars -->
+            <p id="noCarsMessage" class="no-cars-message">You haven't saved any car yet!</p>
+        </div>
+        <!-- Add New Car Button -->
+        <button id="addCarButton" class="add-car-button">Add New Car</button>
+
+        <!-- Car Element -->
+        <div class="car">
+            <img src="Images/car.png" alt="Outlined car" />
+        </div>
+    </div>
+    <style>
+        body {
+    overflow: auto; /* Allows scrolling for the whole page */
+}
+        .add-car-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FBC767;
+            border: 2px solid #333;
+            border-radius: 5px;
+            color: #352F2F;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative; /* Ensures it can be positioned */
+            top: 10px; /* Pushes it 50px down */
+        }
+    
+        .add-car-button:hover {
+            background-color: #f9b947;
+        }
+    
+        .fixed-container {
+            width: 1024px;
+            height: 768px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+    
+        .car {
+            opacity: 0.3;
+            position: absolute;
+            width: 900px;
+            z-index: -1;
+            top: 100px; /* Start from a decent position */
+            left: 50px;
+        }
+    
+        .saved-cars {
+            position: absolute;
+            top: 140px;
+            left: 50px;
+            width: 150px;
+            padding: 20px;
+            background-color: #FBC767;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 0;
+            border: 2px solid #333;
+            color: #352F2F;
+            font-family: 'Poppins', sans-serif;
+            font-size: large;
+        }
+    
+        .cars-container {
+            position: absolute;
+            top: 200px;
+            left: 50px;
+            width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+    
+        /* Styling for the message displayed when no cars are saved */
+        .no-cars-message {
+            font-size: 24px;
+            color: brown;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin-top: 120px;
+            top: 50;
+            display: none; /* Initially hidden */
+        }
+    
+        .car-info-card {
+            width: 100%;
+            padding: 20px;
+            background-color: #FBC767;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #333;
+            color: #352F2F;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+    
+        .car-info-card h3 {
+            text-align: center;
+            margin: 0;
+        }
+    
+        .arrow-icon {
+            position: absolute;
+            top: 10px;
+            right: 80px;
+            width: 20px;
+            cursor: pointer;
+            z-index: 2;
+        }
+    
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: grey;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: small;
+            z-index: 2;
+        }
+    
+        .more-info {
+            display: none;
+            background: linear-gradient(90deg, #352F2F, #FBC767); /* Gradient between yellow and dark brown */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            max-width: 400px;
+            margin-top: 20px;
+            color: #fff; /* Light text color for contrast */
+        }
+    
+        .more-info h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #FBC767; /* Lighter yellow for the heading */
+        }
+    
+        .more-info p {
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+    
+        .more-info p strong {
+            color: #FBC767; /* Highlight label text with yellow */
+        }
+    
+        .more-info p:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Slight highlight on hover */
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+    
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .car {
+                left: 20px; /* Smaller left padding */
+                top: 150px; /* Move car down */
+                width: 80%; /* Smaller car size */
+                opacity: 0.4;
+            }
+    
+            .arrow-icon {
+                top: 10px;
+                left: 10px; /* Move arrow to the left */
+                width: 15px; /* Smaller size for the arrow */
+            }
+    
+            .saved-cars {
+                width: 120px; /* Smaller saved-cars width */
+                top: 100px; /* Move the saved-cars box higher */
+                left: 20px; /* Move the box to the left */
+                padding: 15px; /* Reduce padding */
+                font-size: 14px; /* Reduce font size */
+            }
+    
+            .cars-container {
+                top: 250px; /* Move container down */
+                width: 85%; /* Smaller container width */
+                left: 15px; /* Adjust left margin */
+            }
+    
+            .car-info-card {
+                width: 90%; /* Make car info cards narrower */
+                padding: 15px; /* Reduce padding */
+                font-size: 14px; /* Make font smaller */
+            }
+    
+            .add-car-button {
+                font-size: 14px; /* Smaller button text */
+                padding: 8px 15px; /* Reduce padding */
+            }
+    
+            /* Hide saved-cars on small screens */
+            .saved-cars {
+                display: none; /* Hide saved cars for mobile */
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .car {
+                left: 5px; /* Adjust left margin further */
+                top: 200px; /* Move car further down */
+                width: 90%; /* Reduce width further */
+                opacity: 0.3;
+            }
+    
+            .arrow-icon {
+                top: 10px;
+                left: 5px; /* Move arrow closer to the edge */
+                width: 12px; /* Even smaller arrow for small screens */
+            }
+    
+            .saved-cars {
+                width: 100px; /* Make saved-cars even smaller */
+                top: 80px; /* Move it up more */
+                left: 10px; /* Move it left */
+                padding: 10px; /* Reduce padding */
+                font-size: 12px; /* Smaller font size */
+                display: none; /* Hide saved cars on very small screens */
+            }
+    
+            .cars-container {
+                top: 300px; /* Move container down even further */
+                width: 95%; /* Reduce container width */
+                left: 0; /* Align to the left */
+            }
+    
+            .car-info-card {
+                width: 95%; /* More narrow cards on small screens */
+                padding: 10px; /* Less padding */
+                font-size: 12px; /* Smaller font size */
+            }
+    
+            .add-car-button {
+                font-size: 12px; /* Even smaller button text */
+                padding: 6px 12px; /* Even smaller padding */
+            }
+        }
+    </style>
+
+    <script>
+        const carsContainer = document.getElementById('carsContainer');
+        const noCarsMessage = document.getElementById('noCarsMessage');
+        const addCarButton = document.getElementById('addCarButton');
+
+        // Fetch cars from the backend
+        async function fetchCars() {
+            try {
+                const response = await fetch('/api/cars');
+                const cars = await response.json();
+                if (cars.length > 0) {
+                    noCarsMessage.style.display = "none";
+                    cars.forEach(carDetails => createCarCard(carDetails));
+                } else {
+                    noCarsMessage.style.display = "block";
+                }
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+            }
+        }
+
+       // Delete a car from the backend
+async function deleteCar(carId, carCard) {
+    try {
+        console.log('Attempting to delete car with ID:', carId);
+        const response = await fetch(`/api/cars/${carId}`, {
+            method: 'DELETE',
+        });
+
+        const responseData = await response.json();
+        
+        console.log('Delete response:', response.status, responseData);
+
+        if (response.ok) {
+            carCard.remove();
+            const remainingCars = document.querySelectorAll('.car-info-card');
+            if (remainingCars.length === 0) {
+                noCarsMessage.style.display = "block";
+            }
+        } else {
+            console.error('Failed to delete car:', responseData);
+            alert(`Failed to delete the car: ${responseData.message}`);
+        }
+    } catch (error) {
+        console.error('Error deleting car:', error);
+        alert("An error occurred while trying to delete the car");
+    }
+}
+
+// Modify the createCarCard function to pass the correct ID
+function createCarCard(carDetails) {
+    const carCard = document.createElement('div');
+    carCard.classList.add('car-info-card');
+
+    carCard.innerHTML = `
+        <h3 class="car-name">${carDetails.manufacturer}</h3>
+        <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
+        <button class="delete-button">Delete</button>
+
+        <div class="more-info">
+            <h3>Car Details</h3>
+            <p><strong>Model Year:</strong> ${carDetails.modelYear}</p>
+            <p><strong>Vehicle Model:</strong> ${carDetails.vehicleModel}</p>
+            <p><strong>Vehicle Color:</strong> ${carDetails.vehicleColor}</p>
+            <p><strong>Plate Letters:</strong> ${carDetails.plateLetters}</p>
+            <p><strong>Plate Number:</strong> ${carDetails.plateNumber}</p>
+        </div>
+    `;
+
+    carsContainer.appendChild(carCard);
+
+    // Toggle more info visibility
+    const arrowIcon = carCard.querySelector('.arrow-icon');
+    const moreInfo = carCard.querySelector('.more-info');
+    arrowIcon.addEventListener("click", function() {
+        moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
+    });
+
+    // Delete button functionality
+    const deleteButton = carCard.querySelector('.delete-button');
+    deleteButton.addEventListener('click', () => deleteCar(carDetails._id, carCard)); // Use _id instead of id
+}
+
+        // Add a new car
+        addCarButton.addEventListener('click', async function() {
+            const newCar = {
+                manufacturer: prompt("Enter Manufacturer:", "Toyota"),
+                modelYear: prompt("Enter Model Year:", "2022"),
+                vehicleModel: prompt("Enter Vehicle Model:", "Camry"),
+                vehicleColor: prompt("Enter Vehicle Color:", "Red"),
+                plateLetters: prompt("Enter Plate Letters:", "ABC"),
+                plateNumber: prompt("Enter Plate Number:", "1234")
+            };
+
+            if (newCar.manufacturer && newCar.modelYear && newCar.vehicleModel) {
+                try {
+                    const response = await fetch('/api/cars', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(newCar),
+                    });
+
+                    const car = await response.json();
+                    createCarCard(car);
+                    noCarsMessage.style.display = "none"; // Hide the "no cars" message
+                } catch (error) {
+                    alert("Failed to add new car");
+                    console.error('Error adding car:', error);
+                }
+            } else {
+                alert("Please fill in all required fields!");
+            }
+        });
+
+        // Initial fetch for cars
+        fetchCars();
+    </script>
+</body>
+</html>

@@ -1,21 +1,29 @@
-// Import required modules
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const path = require('path');
+const cors = require('cors');
 
-// Load environment variables
-dotenv.config();
-
-// Initialize app and middleware
 const app = express();
-app.use(express.json()); // Parse JSON request bodies
-app.use(cors()); // Enable CORS for cross-origin requests
 
-// Connect to MongoDB using the URI from the environment variable
-mongoose.connect(process.env.MONGO_URI)
+// Middleware (correct order)
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// MongoDB Connection
+const uri = "mongodb+srv://moh:modeB522@road.73buh.mongodb.net/?retryWrites=true&w=majority&appName=Road";
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log('Error connecting to MongoDB:', err));
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// Define Schema and Model
+const dataSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    age: Number
+});
+const Data = mongoose.model('Data', dataSchema);
 
 // Define the Car schema and model
 const carSchema = new mongoose.Schema({
@@ -58,8 +66,65 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// API Routes
+// Routes
+app.get('/HomePage.HTML', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'HomePage.html'));
+});
+// Add this route along with your other routes
+app.get('/HomePage.HTML', (req, res) => {
+    console.log('Attempting to serve HomePage.HTML');
+    const filePath = path.join(__dirname, 'public', 'HomePage.HTML');
+    console.log('File path:', filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('Error serving HomePage.HTML:', err);
+            res.status(500).send('Error loading home page');
+        }
+    });
+});
+// Add Data
+app.post('/add-data', async (req, res) => {
+    try {
+        const newData = new Data(req.body);
+        const savedData = await newData.save();
+        res.json({ message: 'Data added successfully', data: savedData });
+    } catch (err) {
+        res.status(500).json({ message: 'Error saving data', error: err });
+    }
+});
 
+// Get Data
+app.get('/get-data', async (req, res) => {
+    try {
+        const data = await Data.find();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: 'Error retrieving data', error: err });
+    }
+});
+
+// Serve HTML pages
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/requests', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'requests.html'));
+});
+
+app.get('/car', (req, res) => {
+    console.log('Attempting to serve car.html');
+    const filePath = path.join(__dirname, 'public', 'car.html');
+    console.log('File path:', filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('Error serving car.html:', err);
+            res.status(500).send('Error loading car page');
+        }
+    });
+});
+
+// API Routes
 // 1. Create a new car
 app.post('/api/cars', async (req, res) => {
     try {
@@ -81,18 +146,56 @@ app.get('/api/cars', async (req, res) => {
     }
 });
 
-// 3. Create a new request
-app.post('/api/requests', async (req, res) => {
+// 3. Delete a car
+app.delete('/api/cars/:id', async (req, res) => {
     try {
-        const request = new Request(req.body);
-        await request.save();
-        res.status(201).json({ message: 'Request created successfully', request });
+        console.log('Attempting to delete car with ID:', req.params.id);
+        
+        const deletedCar = await Car.findByIdAndDelete(req.params.id);
+        
+        if (!deletedCar) {
+            console.log('Car not found with ID:', req.params.id);
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        
+        console.log('Car deleted successfully:', deletedCar);
+        res.status(200).json({ message: 'Car deleted successfully', deletedCar });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating request', error });
+        console.error('Error deleting car:', error);
+        res.status(500).json({ message: 'Error deleting car', error: error.message });
     }
 });
 
-// 4. Get all requests
+// 4. Create a new request
+app.post('/api/requests', async (req, res) => {
+    try {
+        console.log('Received request body:', req.body);
+        
+        // Validate required fields
+        if (!req.body.details) {
+            return res.status(400).json({ message: 'Request details are required' });
+        }
+
+        const request = new Request({
+            details: req.body.details,
+            status: req.body.status || 'Pending',
+            createdAt: new Date()
+        });
+
+        const savedRequest = await request.save();
+        console.log('Request saved:', savedRequest);
+        
+        res.status(201).json(savedRequest);
+    } catch (error) {
+        console.error('Error creating request:', error);
+        res.status(500).json({ 
+            message: 'Error creating request', 
+            error: error.message 
+        });
+    }
+});
+
+// 5. Get all requests
 app.get('/api/requests', async (req, res) => {
     try {
         const requests = await Request.find();
@@ -102,7 +205,7 @@ app.get('/api/requests', async (req, res) => {
     }
 });
 
-// 5. Update a request status
+// 6. Update a request status
 app.patch('/api/requests/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -124,7 +227,7 @@ app.patch('/api/requests/:id', async (req, res) => {
     }
 });
 
-// 6. Fetch user info by userID
+// 7. Fetch user info by userID
 app.get('/api/user/:userID', async (req, res) => {
     try {
         const { userID } = req.params;
@@ -134,19 +237,18 @@ app.get('/api/user/:userID', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json(user); // Return user data
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching user info', error });
     }
 });
 
-// 7. Add a car to a user's carDetails (assuming the car is created first)
+// 8. Add a car to a user's carDetails
 app.post('/api/user/:userID/cars', async (req, res) => {
     try {
         const { userID } = req.params;
         const car = new Car(req.body);
 
-        // Save the car details in the user
         const user = await User.findOneAndUpdate(
             { userID },
             { $push: { carDetails: car } },
@@ -160,6 +262,31 @@ app.post('/api/user/:userID/cars', async (req, res) => {
         res.status(201).json({ message: 'Car added to user successfully', user });
     } catch (error) {
         res.status(500).json({ message: 'Error adding car to user', error });
+    }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        message: 'Something went wrong!', 
+        error: err.message 
+    });
+});
+// Add delete request route
+app.delete('/api/requests/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedRequest = await Request.findByIdAndDelete(id);
+        
+        if (!deletedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+        
+        res.status(200).json({ message: 'Request deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting request:', error);
+        res.status(500).json({ message: 'Error deleting request', error: error.message });
     }
 });
 
