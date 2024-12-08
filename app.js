@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
     phone: String,
     email: String,
     carDetails: [carSchema],
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: Number, enum: [1, 2, 3], default: 1 } // 1 = user, 2 = admin, 3 = SP
 });
 const User = mongoose.model('User', userSchema);
 
@@ -83,7 +83,7 @@ app.get('/requests', (req, res) => res.sendFile(path.join(__dirname, 'public', '
 
 // Cars API
 app.route('/api/cars')
-    .post(authenticateJWT, checkRole('admin'), async (req, res) => {
+    .post(authenticateJWT, checkRole(2), async (req, res) => { // Only admin (role = 2) can add cars
         try {
             const car = new Car(req.body);
             const savedCar = await car.save();
@@ -101,7 +101,7 @@ app.route('/api/cars')
         }
     });
 
-app.delete('/api/cars/:id', authenticateJWT, checkRole('admin'), async (req, res) => {
+app.delete('/api/cars/:id', authenticateJWT, checkRole(2), async (req, res) => { // Only admin (role = 2) can delete cars
     try {
         const deletedCar = await Car.findByIdAndDelete(req.params.id);
         if (!deletedCar) return res.status(404).json({ message: 'Car not found' });
@@ -113,7 +113,7 @@ app.delete('/api/cars/:id', authenticateJWT, checkRole('admin'), async (req, res
 
 // Requests API
 app.route('/api/requests')
-    .post(authenticateJWT, checkRole('admin'), async (req, res) => {
+    .post(authenticateJWT, checkRole(2), async (req, res) => { // Only admin (role = 2) can create requests
         try {
             if (!req.body.details) return res.status(400).json({ message: 'Request details are required' });
             const request = new Request(req.body);
@@ -132,7 +132,7 @@ app.route('/api/requests')
         }
     });
 
-app.patch('/api/requests/:id', authenticateJWT, checkRole('admin'), async (req, res) => {
+app.patch('/api/requests/:id', authenticateJWT, checkRole(2), async (req, res) => { // Only admin (role = 2) can update requests
     try {
         const updatedRequest = await Request.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
         if (!updatedRequest) return res.status(404).json({ message: 'Request not found' });
