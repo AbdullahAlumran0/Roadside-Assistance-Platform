@@ -273,22 +273,6 @@ app.use((err, req, res, next) => {
         error: err.message 
     });
 });
-// Add delete request route
-app.delete('/api/requests/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const deletedRequest = await Request.findByIdAndDelete(id);
-        
-        if (!deletedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
-        }
-        
-        res.status(200).json({ message: 'Request deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting request:', error);
-        res.status(500).json({ message: 'Error deleting request', error: error.message });
-    }
-});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
