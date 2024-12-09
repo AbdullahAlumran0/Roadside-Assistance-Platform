@@ -147,25 +147,27 @@ app.get('/api/cars', async (req, res) => {
 });
 
 // 3. Delete a car
-app.delete('/api/cars/:id', async (req, res) => {
+app.delete('/api/requests/:id', async (req, res) => {
     try {
-        console.log('Attempting to delete car with ID:', req.params.id);
+        const { id } = req.params;
+        const deletedRequest = await Request.findByIdAndDelete(id);
         
-        const deletedCar = await Car.findByIdAndDelete(req.params.id);
-        
-        if (!deletedCar) {
-            console.log('Car not found with ID:', req.params.id);
-            return res.status(404).json({ message: 'Car not found' });
+        if (!deletedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
         }
         
-        console.log('Car deleted successfully:', deletedCar);
-        res.status(200).json({ message: 'Car deleted successfully', deletedCar });
+        res.status(200).json({ 
+            message: 'Request deleted successfully', 
+            deletedRequest 
+        });
     } catch (error) {
-        console.error('Error deleting car:', error);
-        res.status(500).json({ message: 'Error deleting car', error: error.message });
+        console.error('Error deleting request:', error);
+        res.status(500).json({ 
+            message: 'Error deleting request', 
+            error: error.message 
+        });
     }
 });
-
 // 4. Create a new request
 app.post('/api/requests', async (req, res) => {
     try {
