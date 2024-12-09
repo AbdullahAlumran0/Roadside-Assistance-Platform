@@ -8,7 +8,7 @@
         
     </head>
 <body>
-    <script src="vertification.js"></script>
+    <script type="module" src="vertification.js"></script>
     <div class="container">
 
         <!-- Title and subtitle -->
@@ -28,24 +28,46 @@
              <!-- </div> -->
             <button class="continue-btn" onclick=saveRoleAndRedirect()>Continue</button>
         </div>
-        <script>
+        <!-- <script type="module">
+
             function saveRoleAndRedirect() {
-                // Get the value of the input with id="number"
+                // const phoneNumber = document.getElementById("number").value;
+                // const formattedPhoneNumber = "+966" + phoneNumber.slice(1);  
+                // console.log(formattedPhoneNumber);
+                // localStorage.setItem("phoneNumber", formattedPhoneNumber);
+                // createVerification(formattedPhoneNumber);  
+                window.location.href = 'verify';  
+            }
+        </script> -->
+        <script>
+            async function saveRoleAndRedirect() {
                 const phoneNumber = document.getElementById("number").value;
-                
-                // Ensure the phone number starts with a "+" and append country code
-                const formattedPhoneNumber = "+966" + phoneNumber.slice(1);  // Assuming the phone number starts with a "0"
-        
-                // Save the formatted phone number in localStorage
-                localStorage.setItem("phomeNumber", formattedPhoneNumber);
-                
-                // Ensure you have the createVerification function defined elsewhere in your code
-                createVerification(formattedPhoneNumber);  
-                
-                // Redirect to the 'verify.html' page
-                window.location.href = 'verify.html';  // Use lowercase file extension
+                const formattedPhoneNumber = "+966" + phoneNumber.slice(1);
+    
+                try {
+                    // Send phone number to backend to trigger the Twilio verification
+                    const response = await fetch('http://localhost:3000/verify', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phoneNumber: formattedPhoneNumber })
+                    });
+    
+                    const data = await response.json();
+                    if (response.ok) {
+                        alert('Verification sent successfully.');
+                        window.location.href = 'verify';  // Redirect to verification page
+                    } else {
+                        alert(data.message || 'Error during verification.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error during verification.');
+                }
             }
         </script>
+
 
         <!-- Footer with register link -->
         <div class="footer">

@@ -28,28 +28,37 @@
             <button class="continue-btn" onclick=verifyAndRedirect()>Continue</button>
             <br>
             <br>
-            <a href="log-in.HTML">Resend PIN code</a>
+            <a href="/">Resend PIN code</a>
         </div>
-        <script>
+        <!-- <script>
             function verifyAndRedirect() {
-                // Retrieve the saved role from localStorage
-                // const selectedRole = localStorage.getItem('selectedRole');
+
                 const phomeNumber = localStorage.getItem("phoneNumber");
-                // Redirect based on the role
+                
 
-
-
-                // if (selectedRole === 'Admin') {
-                //     window.location.href = 'AdminView.html'; // Admin view page
-                // } 
-                // else if(selectedRole === 'Assistance Provider') {
-                //     window.location.href = 'ServiceProviderHome.html'
-                // }
-                // else {
-                //     window.location.href = 'HomePage.html'; // Default page for other roles
-                // }
                 return validateCode(document.getElementById("code"),phomeNumber);
             }
+            </script> -->
+            <script>
+                function verifyAndRedirect() {
+                    const phoneNumber = localStorage.getItem("phoneNumber"); 
+                    const code = document.getElementById("code").value;
+                    
+                    validateCode(code, phoneNumber)
+                        .then(result => {
+                            console.log(result); //remove this later.
+                            if (result === 'approved') {
+                                //need to direct from here i guess
+                                window.location.href = "/"; // Adjust this URL to the page you want to redirect to
+                            } else {
+                                alert('Verification failed. Please try again.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error during verification:', err);
+                            alert('An error occurred during verification. Please try again later.');
+                        });
+                }
             </script>
         <!-- Footer with register link -->
         <div class="footer">
