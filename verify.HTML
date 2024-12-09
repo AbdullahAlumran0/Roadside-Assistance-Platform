@@ -39,7 +39,7 @@
                 return validateCode(document.getElementById("code"),phomeNumber);
             }
             </script> -->
-            <script>
+            <!-- <script>
                 function verifyAndRedirect() {
                     const phoneNumber = localStorage.getItem("phoneNumber"); 
                     const code = document.getElementById("code").value;
@@ -58,6 +58,35 @@
                             console.error('Error during verification:', err);
                             alert('An error occurred during verification. Please try again later.');
                         });
+                }
+            </script> -->
+            <script>
+                function verifyAndRedirect() {
+                    const phoneNumber = localStorage.getItem("phoneNumber"); 
+                    const code = document.getElementById("code").value;
+                    
+                    // Make a POST request to the server to validate the code
+                    fetch('/verifyCode', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ code, phoneNumber }) // Send the code and phone number
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.message === 'Verification successful') {
+                            window.location.href = "/"; // Redirect after successful verification
+                        } 
+                        else {
+                            console.log(result.message);
+                            alert('Verification failed. Please try again.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error during verification:', err);
+                        alert('An error occurred during verification. Please try again later.');
+                    });
                 }
             </script>
         <!-- Footer with register link -->

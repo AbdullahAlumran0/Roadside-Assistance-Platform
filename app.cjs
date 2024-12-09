@@ -275,6 +275,22 @@ app.post('/verify', async (req, res) => {   // for phone sms
         res.status(500).json({ message: 'Error sending verification', error: error.message });
     }
 });
+app.post('/verifyCode', async (req, res) => {
+    const { code, phoneNumber } = req.body;
+
+    try {
+        const verificationStatus = await validateCode(code, phoneNumber);
+        if (verificationStatus === 'approved') {
+            res.status(200).json({ message: 'Verification successful' });
+        } 
+        // else {
+        //     res.status(400).json({ message: 'Verification failed' });
+        // }
+    } catch (error) {
+        res.status(500).json({ message: 'Error during verification', error: error.message });
+    }
+});
+
 
 // Need a post for sms validation/moving to next page. (Logic already in the verify file just need the roles)
 

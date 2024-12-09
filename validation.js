@@ -32,4 +32,6 @@ export async function validateCode(codeEnteredByUser,phoneNum) {
       console.error('Error during verification check:', error.message);
     }
   }
-
+  console.log('Service SID:', serviceSid);
+  // console.log('Phone Number:', phoneNum);
+  console.log('Code:', codeEnteredByUser);
