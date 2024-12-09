@@ -1,11 +1,5 @@
 // Import required libraries
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const path = require('path');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-
+import mongoose from 'mongoose';
 // Initialize app
 const app = express();
 
