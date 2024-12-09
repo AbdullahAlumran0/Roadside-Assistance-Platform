@@ -1,0 +1,504 @@
+/* Base Body Styling */
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+body {
+  background-color: #352F2F;
+  color: #FBC767;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
+.container {
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+.registeration-box {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 20px;
+  border-radius: 15px;
+  height: fit-content;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.info-box {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 5px;
+  border-radius: 10px;
+  height: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+.car-info {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 2px;
+  border-radius: 10px;
+  height: 130px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+.SPhotbar {
+  display: flex;
+  justify-content: center;
+}
+.SPinfo-text {
+  padding-left: 30px;
+  text-align: left;
+  text-decoration: solid;
+}
+.SPsearch-box {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 2px;
+  border-radius: 10px;
+  height: 80px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+.Request-mini {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 10px;
+  border-radius: 10px;
+  height: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+.Request-details {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 10px;
+  border-radius: 10px;
+  height: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+/* Back Button */
+.back-link {
+  color: #FBC767;
+  font-size: 16px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  text-decoration: none;
+}
+
+/* Header Styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  background-color: #352F2F;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0;
+  color: #FFCC66;
+}
+
+.input-field input, .input-field select {
+  background-color: transparent;
+  border: none;
+  color: #FFCC66;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+}
+
+/* Request and Login Cards Styling */
+.login-card, .request-card, .newRequest-card {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+}
+
+.login-card h2, .request-card h2, .newRequest-card h2 {
+  color: #352F2F;
+  font-size: 1.2em;
+}
+
+.login-card p, .request-card p, .newRequest-card p {
+  color: #352F2F;
+  font-size: 0.9em;
+}
+
+/* Input Group Styling */
+.input-group input[type="text"], .modal-content input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #352F2F;
+  color: #FBC767;
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Role Selection Styling */
+.role-selection label {
+  display: block;
+  color: #352F2F;
+  font-size: 0.9em;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.role-selection input[type="radio"] {
+  margin-right: 8px;
+}
+
+/* Button Styling */
+.continue-btn, .confirm-btn, .cancel-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+.next-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 60%;
+}
+.confirm-btn-SP {
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 30%;
+  margin-top: 10px;
+  background-color: #352F2F;
+  color: green
+}
+.cancel-btn-SP {
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 30%;
+  margin-top: 10px;
+  background-color: #352F2F;
+  color: red;
+}
+
+.continue-btn, .next-btn {
+  background-color: #352F2F;
+  color: #FBC767;
+}
+
+.confirm-btn {
+  background-color: #008000;
+  color: #fff;
+}
+
+.cancel-btn {
+  background-color: #FF0000;
+  color: #fff;
+}
+
+/* Button Hover Effects */
+.continue-btn:hover, .confirm-btn:hover, .cancel-btn:hover {
+  opacity: 0.8;
+}
+
+/* Footer Styling */
+.footer {
+  margin-top: 20px;
+  color: #FBC767;
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer a {
+  color: #FBC767;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Request Box Styling */
+.request-box {
+  background-color: #352F2F;
+  color: #FBC767;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* Expandable Details in Request Card */
+.details {
+  font-size: 0.9em;
+  color: #FBC767;
+  padding-top: 10px;
+  display: none;
+}
+.SPdetails {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 2px;
+  border-radius: 10px;
+  height: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+/* Toggle Button for Expanding Details */
+.toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #352F2F;
+  cursor: pointer;
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.modal-content {
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Adjusting Modal Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Poppins Font Styles */
+.poppins-thin {
+  font-weight: 100;
+}
+
+.poppins-extralight {
+  font-weight: 200;
+}
+
+.poppins-light {
+  font-weight: 300;
+}
+
+.poppins-regular {
+  font-weight: 400;
+  color: #352F2F;
+}
+
+.poppins-medium {
+  font-weight: 500;
+}
+
+.poppins-semibold {
+  font-weight: 600;
+}
+
+.poppins-bold {
+  font-weight: 700;
+  color: #352F2F;
+  font-size: 20px;
+}
+
+.poppins-extrabold {
+  font-weight: 800;
+}
+
+.poppins-black {
+  font-weight: 900;
+}
+
+/* Checkbox */
+.save-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.save-checkbox input[type="checkbox"] {
+  margin-right: 5px;
+}
+.saved-car-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.saved-car-item button {
+  background-color: #FBC767;
+  color: #352F2F;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.saved-car-item button:hover {
+  background-color: #f9b947;
+}
+
+#savedCarsList {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+.request-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.delete-btn {
+  padding: 2px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #ff0000;
+}
+
+/* Responsive Styles */
+
+/* Mobile Phones */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .registeration-box {
+    height: auto;
+    padding: 15px;
+  }
+
+  .header, .footer {
+    font-size: 0.8em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 0.9em;
+    padding: 15px;
+  }
+
+  .toggle-btn {
+    font-size: 1em;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px auto 50px;
+    grid-template-areas:
+      "head"
+      "main"
+      "foot";
+    gap: 10px;
+    margin: 0;
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+
+  .registeration-box {
+    padding: 20px;
+    height: auto;
+  }
+
+  .header, .footer {
+    font-size: 0.9em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 1em;
+    padding: 20px;
+  }
+
+  body {
+    grid-template-columns: 200px auto;
+    grid-template-rows: 50px 150px 150px 50px;
+    grid-template-areas:
+      "head head"
+      "nav main"
+      "aside main"
+      "foot foot";
+  }
+}
+
+/* Laptops and Larger Screens */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 800px;
+  }
+
+  .registeration-box {
+    padding: 30px;
+    height: 500px;
+  }
+
+  .header, .footer {
+    font-size: 1em;
+  }
+
+  .login-card, .request-card, .newRequest-card {
+    font-size: 1.1em;
+    padding: 25px;
+  }
+
+  .toggle-btn {
+    font-size: 1.2em;
+  }
+
+  body {
+    grid-template-columns: 200px auto 200px;
+    grid-template-rows: 50px 300px 50px;
+    grid-template-areas:
+      "head head head"
+      "nav main aside"
+      "foot foot foot";
+  }
+  
+}

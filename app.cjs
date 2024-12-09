@@ -282,6 +282,17 @@ app.post('/verifyCode', async (req, res) => {
         const verificationStatus = await validateCode(code, phoneNumber);
         if (verificationStatus === 'approved') {
             res.status(200).json({ message: 'Verification successful' });
+
+            if (user.role === 1) {
+                // Redirect to the home page for regular users
+                res.redirect('/HomePage.HTML');
+            } else if (user.role === 2) {
+                // Redirect to the service provider's page
+                res.redirect('/ServiceProviderHome.HTML');
+            } else if (user.role === 3) {
+                // Redirect to the admin's page
+                res.redirect('/AdminView.HTML');
+            }
         } 
         // else {
         //     res.status(400).json({ message: 'Verification failed' });
