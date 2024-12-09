@@ -2,3 +2,5 @@
 .env
 node_modules/
 safelist.js 
+createuser.js
+db.js

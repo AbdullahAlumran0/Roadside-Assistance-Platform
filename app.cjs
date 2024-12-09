@@ -54,9 +54,9 @@ const Request = mongoose.model('Request', requestSchema);
 // Define the User schema and model
 const userSchema = new mongoose.Schema({
     userID: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
+    name: { type: String },
     phone: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String },
     carDetails: [
         {
             manufacturer: String,
@@ -65,9 +65,11 @@ const userSchema = new mongoose.Schema({
             vehicleColor: String,
             plateLetters: String,
             plateNumber: String,
-        },
+        }
     ],
+    // role: {type: Number, required: true}
 });
+
 
 const User = mongoose.model('User', userSchema);
 
@@ -282,14 +284,16 @@ app.post('/verifyCode', async (req, res) => {
         const verificationStatus = await validateCode(code, phoneNumber);
         if (verificationStatus === 'approved') {
             res.status(200).json({ message: 'Verification successful' });
-
-            if (user.role === 1) {
+            const role = getUserByPhone("0" + phoneNumber.slice(3))
+            console.log(role);
+            console.log(phoneNumber.slice(3));
+            if (role === 1) {
                 // Redirect to the home page for regular users
                 res.redirect('/HomePage.HTML');
-            } else if (user.role === 2) {
+            } else if (role === 2) {
                 // Redirect to the service provider's page
                 res.redirect('/ServiceProviderHome.HTML');
-            } else if (user.role === 3) {
+            } else if (role === 3) {
                 // Redirect to the admin's page
                 res.redirect('/AdminView.HTML');
             }
@@ -301,6 +305,25 @@ app.post('/verifyCode', async (req, res) => {
         res.status(500).json({ message: 'Error during verification', error: error.message });
     }
 });
+const getUserByPhone = async (phoneNumber) => {
+    try {
+      await connectDB(); // Connect to the DB
+  
+      // Retrieve a user by email
+      const user = await User.findOne({ phone: phoneNumber });
+      
+      if (!user) {
+        console.log('User not found');
+        return;
+      }
+  
+      console.log('User found:', user);
+    } catch (err) {
+      console.error('Error retrieving user:', err);
+    } finally {
+      mongoose.connection.close(); // Close connection after operations
+    }
+  };
 
 
 // Need a post for sms validation/moving to next page. (Logic already in the verify file just need the roles)
