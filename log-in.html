@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AssistMe Login</title>
         <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+        
     </head>
 <body>
+    <script src="vertification.js"></script>
     <div class="container">
 
         <!-- Title and subtitle -->
@@ -17,33 +19,33 @@
             <h2>Log in</h2>
             <p>Enter your mobile number to create or log in to your account</p>
             <div class="input-group">
-                <input type="text" placeholder="05******" maxlength="10">
-            </div>
-            <div class="role-selection">
+                <input type="text" id= "number" placeholder="05******" maxlength="10">
+             </div>
+            <!-- <div class="role-selection">
                 <label><input type="radio" name="role" value="AssistMe User"  checked> AssistMe User</label>
                 <label><input type="radio" name="role" value="Assistance Provider"> Assistance Provider</label>
-                <label><input type="radio" name="role" value="Admin"> Admin</label>
-            </div>
+                <label><input type="radio" name="role" value="Admin"> Admin</label>  -->
+             <!-- </div> -->
             <button class="continue-btn" onclick=saveRoleAndRedirect()>Continue</button>
         </div>
         <script>
             function saveRoleAndRedirect() {
-                // Get selected role
-                const roles = document.getElementsByName('role');
-                let selectedRole = '';
-            
-                for (const role of roles) {
-                    if (role.checked) {
-                        selectedRole = role.value;
-                        break;
-                    }
-                }
-            
-                // Save the role in localStorage and redirect to verify page
-                localStorage.setItem('selectedRole', selectedRole);
-                window.location.href = 'verify.html';
+                // Get the value of the input with id="number"
+                const phoneNumber = document.getElementById("number").value;
+                
+                // Ensure the phone number starts with a "+" and append country code
+                const formattedPhoneNumber = "+966" + phoneNumber.slice(1);  // Assuming the phone number starts with a "0"
+        
+                // Save the formatted phone number in localStorage
+                localStorage.setItem("phomeNumber", formattedPhoneNumber);
+                
+                // Ensure you have the createVerification function defined elsewhere in your code
+                createVerification(formattedPhoneNumber);  
+                
+                // Redirect to the 'verify.html' page
+                window.location.href = 'verify.html';  // Use lowercase file extension
             }
-            </script>
+        </script>
 
         <!-- Footer with register link -->
         <div class="footer">

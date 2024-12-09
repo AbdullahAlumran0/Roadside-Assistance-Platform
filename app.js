@@ -1,11 +1,12 @@
 // Import required libraries
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const path = require('path');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import path from 'path';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import express from 'express';
+// import { validateCode } from './validation.js';
+// import { createverification }  from './vertification.js';
 // Initialize app
 const app = express();
 
@@ -74,10 +75,11 @@ const checkRole = (role) => (req, res, next) => {
 };
 
 // Serve Static Pages
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname,'log-in.HTML')));
 app.get('/HomePage.HTML', (req, res) => res.sendFile(path.join(__dirname, 'public', 'HomePage.HTML')));
 app.get('/car', (req, res) => res.sendFile(path.join(__dirname, 'public', 'car.html')));
 app.get('/requests', (req, res) => res.sendFile(path.join(__dirname, 'public', 'requests.html')));
+app.get('/verify.html', (req, res) => res.sendFile(path.join(__dirname,'verify.HTML')));
 
 // API Endpoints
 

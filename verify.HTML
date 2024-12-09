@@ -6,22 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AssistMe Login</title>
         <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+        <script src="validation.js"></script>
     </head>
 <body>
     <div class="container">
 
         <!--Back button-->
-        <a href="log-in.HTML" class="back-link"><img src="Images/BackButton.png" width="55p" height="55p" ></a>
+        <a href="/" class="back-link"><img src="Images/BackButton.png" width="55p" height="55p" ></a>
 
         <!-- Title and subtitle -->
         <h1><strong>AssistMe</strong>, Your Safety, Our Priority</h1>
 
         <!-- Login card -->
         <div class="login-card">
+            <script>const phomeNumber = localStorage.getItem("phoneNumber");</script>
             <h2>Verify Your Number</h2>
-            <p>Enter the 6-digits code sent to 05********</p>
+            <p>Enter the 6-digits code sent to {<script>phomeNumber</script>}</p>
             <div class="input-group">
-                <input type="text" placeholder="******" maxlength="6">
+                <input id="code"type="text" placeholder="******" maxlength="6">
             </div>
             <button class="continue-btn" onclick=verifyAndRedirect()>Continue</button>
             <br>
@@ -31,18 +33,22 @@
         <script>
             function verifyAndRedirect() {
                 // Retrieve the saved role from localStorage
-                const selectedRole = localStorage.getItem('selectedRole');
-            
+                // const selectedRole = localStorage.getItem('selectedRole');
+                const phomeNumber = localStorage.getItem("phoneNumber");
                 // Redirect based on the role
-                if (selectedRole === 'Admin') {
-                    window.location.href = 'AdminView.html'; // Admin view page
-                } 
-                else if(selectedRole === 'Assistance Provider') {
-                    window.location.href = 'ServiceProviderHome.html'
-                }
-                else {
-                    window.location.href = 'HomePage.html'; // Default page for other roles
-                }
+
+
+
+                // if (selectedRole === 'Admin') {
+                //     window.location.href = 'AdminView.html'; // Admin view page
+                // } 
+                // else if(selectedRole === 'Assistance Provider') {
+                //     window.location.href = 'ServiceProviderHome.html'
+                // }
+                // else {
+                //     window.location.href = 'HomePage.html'; // Default page for other roles
+                // }
+                return validateCode(document.getElementById("code"),phomeNumber);
             }
             </script>
         <!-- Footer with register link -->
