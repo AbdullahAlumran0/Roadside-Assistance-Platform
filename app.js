@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const { createVerification } = require('./vertification.js');
+const { validateCode } = require('./validation.js');
+
 // Initialize app
 const app = express();
 
@@ -39,7 +43,7 @@ const carSchema = new mongoose.Schema({
 
 const Car = mongoose.model('Car', carSchema);
 
-// Define the Request schema and model
+// Define the Request schema and model with ratings
 const requestSchema = new mongoose.Schema({
     status: { type: String, default: 'Pending' },
     details: { type: String, required: true },
@@ -75,10 +79,6 @@ const User = mongoose.model('User', userSchema);
 
 // Routes
 app.get('/HomePage.HTML', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'HomePage.html'));
-});
-// Add this route along with your other routes
-app.get('/HomePage.HTML', (req, res) => {
     console.log('Attempting to serve HomePage.HTML');
     const filePath = path.join(__dirname, 'public', 'HomePage.HTML');
     console.log('File path:', filePath);
@@ -89,7 +89,8 @@ app.get('/HomePage.HTML', (req, res) => {
         }
     });
 });
-// Add Data
+
+// Basic CRUD Operations
 app.post('/add-data', async (req, res) => {
     try {
         const newData = new Data(req.body);
@@ -100,7 +101,6 @@ app.post('/add-data', async (req, res) => {
     }
 });
 
-// Get Data
 app.get('/get-data', async (req, res) => {
     try {
         const data = await Data.find();
@@ -111,13 +111,13 @@ app.get('/get-data', async (req, res) => {
 });
 
 // Serve Static Pages
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'log-in.html')));
 app.get('/HomePage.HTML', (req, res) => res.sendFile(path.join(__dirname, 'public', 'HomePage.HTML')));
 app.get('/car', (req, res) => res.sendFile(path.join(__dirname, 'public', 'car.html')));
 app.get('/requests', (req, res) => res.sendFile(path.join(__dirname, 'public', 'requests.html')));
+app.get('/verify', (req, res) => res.sendFile(path.join(__dirname, 'verify.html')));
 
-// API Routes
-// 1. Create a new car
+// Car API Routes
 app.post('/api/cars', async (req, res) => {
     try {
         const car = new Car(req.body);
@@ -128,7 +128,6 @@ app.post('/api/cars', async (req, res) => {
     }
 });
 
-// 2. Get all saved cars
 app.get('/api/cars', async (req, res) => {
     try {
         const cars = await Car.find();
@@ -138,34 +137,33 @@ app.get('/api/cars', async (req, res) => {
     }
 });
 
-// 3. Delete a car
-app.delete('/api/requests/:id', async (req, res) => {
+app.delete('/api/cars/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const deletedRequest = await Request.findByIdAndDelete(id);
+        const deletedCar = await Car.findByIdAndDelete(id);
         
-        if (!deletedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
+        if (!deletedCar) {
+            return res.status(404).json({ message: 'Car not found' });
         }
         
         res.status(200).json({ 
-            message: 'Request deleted successfully', 
-            deletedRequest 
+            message: 'Car deleted successfully', 
+            deletedCar 
         });
     } catch (error) {
-        console.error('Error deleting request:', error);
+        console.error('Error deleting car:', error);
         res.status(500).json({ 
-            message: 'Error deleting request', 
+            message: 'Error deleting car', 
             error: error.message 
         });
     }
 });
-// 4. Create a new request
+
+// Request API Routes
 app.post('/api/requests', async (req, res) => {
     try {
         console.log('Received request body:', req.body);
         
-        // Validate required fields
         if (!req.body.details) {
             return res.status(400).json({ message: 'Request details are required' });
         }
@@ -189,7 +187,6 @@ app.post('/api/requests', async (req, res) => {
     }
 });
 
-// 5. Get all requests
 app.get('/api/requests', async (req, res) => {
     try {
         const requests = await Request.find();
@@ -199,96 +196,6 @@ app.get('/api/requests', async (req, res) => {
     }
 });
 
-// 6. Update a request status
-app.patch('/api/requests/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { status } = req.body;
-
-        const updatedRequest = await Request.findByIdAndUpdate(
-            id,
-            { status },
-            { new: true }
-        );
-
-        if (!updatedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
-        }
-
-        res.status(200).json({ message: 'Request updated successfully', updatedRequest });
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating request', error });
-    }
-});
-
-// 7. Fetch user info by userID
-app.get('/api/user/:userID', async (req, res) => {
-    try {
-        const { userID } = req.params;
-        const user = await User.findOne({ userID });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching user info', error });
-    }
-});
-
-// 8. Add a car to a user's carDetails
-app.post('/api/user/:userID/cars', async (req, res) => {
-    try {
-        const { userID } = req.params;
-        const car = new Car(req.body);
-
-        const user = await User.findOneAndUpdate(
-            { userID },
-            { $push: { carDetails: car } },
-            { new: true }
-        );
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(201).json({ message: 'Car added to user successfully', user });
-    } catch (error) {
-        res.status(500).json({ message: 'Error adding car to user', error });
-    }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ 
-        message: 'Something went wrong!', 
-        error: err.message 
-    });
-});
-app.delete('/api/cars/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const deletedCar = await Car.findByIdAndDelete(id);
-        
-        if (!deletedCar) {
-            return res.status(404).json({ message: 'Car not found' });
-        }
-        
-        res.status(200).json({ 
-            message: 'Car deleted successfully', 
-            deletedCar 
-        });
-    } catch (error) {
-        console.error('Error deleting car:', error);
-        res.status(500).json({ 
-            message: 'Error deleting car', 
-            error: error.message 
-        });
-    }
-});
-// Add this new route specifically for updating status
 app.patch('/api/requests/:requestId/status', async (req, res) => {
     try {
         const { requestId } = req.params;
@@ -317,7 +224,29 @@ app.patch('/api/requests/:requestId/status', async (req, res) => {
     }
 });
 
-// Add a route for ratings
+app.delete('/api/requests/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedRequest = await Request.findByIdAndDelete(id);
+        
+        if (!deletedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+        
+        res.status(200).json({ 
+            message: 'Request deleted successfully', 
+            deletedRequest 
+        });
+    } catch (error) {
+        console.error('Error deleting request:', error);
+        res.status(500).json({ 
+            message: 'Error deleting request', 
+            error: error.message 
+        });
+    }
+});
+
+// Rating Route
 app.post('/api/requests/:requestId/rating', async (req, res) => {
     try {
         const { requestId } = req.params;
@@ -348,6 +277,86 @@ app.post('/api/requests/:requestId/rating', async (req, res) => {
         });
     }
 });
+
+// User API Routes
+app.get('/api/user/:userID', async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const user = await User.findOne({ userID });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user info', error });
+    }
+});
+
+app.post('/api/user/:userID/cars', async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const car = new Car(req.body);
+
+        const user = await User.findOneAndUpdate(
+            { userID },
+            { $push: { carDetails: car } },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(201).json({ message: 'Car added to user successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding car to user', error });
+    }
+});
+
+// Verification Routes
+app.post('/verify', async (req, res) => {
+    const { phoneNumber } = req.body;
+    
+    try {
+        await createVerification(phoneNumber);
+        res.status(200).json({ message: 'Verification sent successfully.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error sending verification', error: error.message });
+    }
+});
+
+app.post('/verifyCode', async (req, res) => {
+    const { code, phoneNumber } = req.body;
+
+    try {
+        const verificationStatus = await validateCode(code, phoneNumber);
+        if (verificationStatus === 'approved') {
+            res.status(200).json({ message: 'Verification successful' });
+
+            if (user.role === 1) {
+                res.redirect('/HomePage.HTML');
+            } else if (user.role === 2) {
+                res.redirect('/ServiceProviderHome.HTML');
+            } else if (user.role === 3) {
+                res.redirect('/AdminView.HTML');
+            }
+        } 
+    } catch (error) {
+        res.status(500).json({ message: 'Error during verification', error: error.message });
+    }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        message: 'Something went wrong!', 
+        error: err.message 
+    });
+});
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
