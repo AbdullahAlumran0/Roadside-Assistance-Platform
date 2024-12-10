@@ -15,14 +15,28 @@
         <!-- Back button -->
         <a href="log-in.html" class="back-link"><img src="Images/BackButton.png" width="55p" height="55p"></a>
         <br/><br/>
-
+          
         <!-- Requests box containing request cards -->
         <div class="request-box">
             <!-- Example of a request card -->
             <div class="request-card" id="requestCard1">
                 <div class="request-header">
-                    <span>Request 1: <span class="status">Completed</span></span>
-                    <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
+                    <span>Request 1: 
+                        <select class="status-select" onchange="updateStatus('requestCard1', this.value)" style="background-color: #352F2F; color: #FBC767; border: none; padding: 5px; border-radius: 5px;">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </span>
+                    <div class="request-buttons" style="display: flex; gap: 5px;">
+                        <button class="toggle-btn" onclick="toggleDetails('requestCard1')">▼</button>
+                        <button 
+                            class="rate-btn" 
+                            onclick="showRatingModal('requestCard1')" 
+                            style="background-color: #FBC767; border: none; border-radius: 5px; padding: 5px 10px; color: #352F2F; cursor: pointer; display: none;">
+                            Rate
+                        </button>
+                    </div>
                 </div>
                 <div class="details" style="display: none;">
                     <p>10:06PM 10/3/2024</p>
@@ -61,7 +75,7 @@
     <div id="newRequestModal" class="modal" style="display: none;">
         <div class="modal-content">
             <!-- Replaced Service 1 input with styled request-card -->
-            <div class="class="service-option style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
+            <div class="service-option" style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
                 <div class="request-header">
                     <span>Service 1: </span>
                     <button class="toggle-btn" style="background-color: #FBC767"; onclick="showServiceOffersModal()">+</button>
@@ -73,23 +87,24 @@
 
             <input type="text" placeholder="Service 2 (optional)">
             <input type="text" placeholder="Service 3 (optional)">
-            <div class="class="car-detail-item style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;" id="service1Card">
+            <div class="car-detail-item" style="background-color: #352F2F; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #FFFFFF;">
                 <div class="request-header">
                     <span>Car details: </span>
                     <button class="toggle-btn" style="background-color: #FBC767;" onclick="showCarDetailsModal()">+</button>
                     <!-- New "Select Saved Car" button -->
                     <button class="showCarsButton" style="background-color: #FBC767; color: #352F2F; margin-left: -5px; font-size: smaller; font: sans-serif;" onclick="confirmSavedCar()">Select Saved Car</button>
-                   
-
-                        <!-- Car options will be added here dynamically -->
-                      </select>
                 </div>
                 <div class="details" id="carDetails" style="display: none;">
                     <!-- Service details will be updated dynamically -->
                 </div>
             </div>
             
-            <input type="text" placeholder="Share Location">
+            <div class="location-input" style="display: flex; gap: 10px;">
+                <input type="text" placeholder="Share Location">
+                <button onclick="getLocation()" style="background-color: #FBC767; border: none; border-radius: 5px; padding: 5px 10px;">
+                    📍 Get Location
+                </button>
+            </div>
             
             <!-- Modal buttons -->
             <div class="modal-buttons">
@@ -125,8 +140,6 @@
                     <span>Option 3: VIP Service - SAR 200 <br> Description: Full support with additional benefits.</span>
                 </label>
             </div>
-            
-            
 
             <!-- Modal buttons -->
             <div class="modal-buttons">
@@ -184,15 +197,34 @@
                     <input type="checkbox" id="saveForLater">
                     <label for="saveForLater">Save for later</label>
                 </div>
-                
 
                 <!-- Modal buttons -->
                 <div class="modal-buttons">
-                <button class="cancel-btn" onclick="hideCarDetailsModal()">Cancel</button>
-                <button class="confirm-btn" onclick="confirmCarDetailsSelection()">Confirm</button>
-            </div>
+                    <button class="cancel-btn" onclick="hideCarDetailsModal()">Cancel</button>
+                    <button class="confirm-btn" onclick="confirmCarDetailsSelection()">Confirm</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Rate Your Service</h2>
+            <div class="rating-stars">
+                <span class="star" data-rating="1">☆</span>
+                <span class="star" data-rating="2">☆</span>
+                <span class="star" data-rating="3">☆</span>
+                <span class="star" data-rating="4">☆</span>
+                <span class="star" data-rating="5">☆</span>
+            </div>
+            <textarea placeholder="Write your review (optional)" style="width: 100%; min-height: 100px; margin: 10px 0; padding: 10px; border-radius: 8px;"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="ratingCancelBtn">Cancel</button>
+                <button class="confirm-btn" id="ratingSubmitBtn">Submit Rating</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

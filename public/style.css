@@ -2,6 +2,7 @@
 * {
   font-family: "Poppins", sans-serif;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 body {
   background-color: #352F2F;
@@ -9,9 +10,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  background-image: radial-gradient(circle at center, #403939 0%, #352F2F 100%);
 }
 
 /* Main Container */
@@ -19,6 +21,9 @@ body {
   width: 90%;
   max-width: 400px;
   text-align: center;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
 }
 .registeration-box {
   background-color: #FBC767;
@@ -104,22 +109,16 @@ body {
 }
 
 .input-field {
-  display: flex;
-  align-items: center;
   background-color: #352F2F;
-  padding: 10px;
-  border-radius: 8px;
-  margin: 8px 0;
-  color: #FFCC66;
+  padding: 12px 15px;
+  border-radius: 12px;
+  margin: 12px 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .input-field input, .input-field select {
-  background-color: transparent;
-  border: none;
-  color: #FFCC66;
-  outline: none;
-  flex: 1;
-  margin-left: 10px;
+  font-size: 1em;
+  letter-spacing: 0.5px;
 }
 
 /* Request and Login Cards Styling */
@@ -153,6 +152,18 @@ body {
   font-size: 1em;
   text-align: center;
   margin-bottom: 10px;
+}
+.registeration-box, .info-box, .car-info, .SPinfo-text, .Request-mini, .Request-details {
+  background-color: #FBC767;
+  color: #352F2F;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.registeration-box:hover, .info-box:hover, .car-info:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Role Selection Styling */
@@ -223,9 +234,10 @@ body {
 }
 
 /* Button Hover Effects */
-.continue-btn:hover, .confirm-btn:hover, .cancel-btn:hover {
-  opacity: 0.8;
+.continue-btn:hover, .confirm-btn:hover, .cancel-btn:hover, .next-btn:hover {
+  transform: scale(1.05);
 }
+
 
 /* Footer Styling */
 .footer {
@@ -248,13 +260,123 @@ body {
   border-radius: 10px;
   padding: 15px;
 }
+.rating-stars {
+  display: flex;
+  color:#ff4444;
+  gap: 5px;
+  font-size: 24px;
+  margin: 15px 0;
+}
 
+.star {
+  cursor: pointer;
+  color:#ff4444;
+  transition: transform 0.2s;
+}
+
+.star:hover {
+  color:#ff4444;
+  transform: scale(1.2);
+}
+
+.star-selected {
+  color: greenyellow;
+}
+
+.star-hover {
+  color: greenyellow;
+  opacity: 0.8;
+}
+
+.rating-display {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.review {
+  margin-top: 5px;
+  font-style: italic;
+  color: #888;
+}
+
+.rate-btn {
+  background-color: #FBC767;
+  color: #352F2F;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 5px;
+}
 /* Expandable Details in Request Card */
 .details {
+  font-size: 0.95em;
+  color: yellow;
+  padding: 20px;
+  margin-top: 15px;
+  background-color: rgba(53, 47, 47, 0.1);
+  border-radius: 12px;
+  transform-origin: top;
+  animation: slideDown 0.3s ease-out;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.details.active {
+  display: block;
+}
+
+.details h3 {
+  margin: 0 0 15px 0;
+  color: #352F2F;
+  font-weight: 600;
+}
+
+.details p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.details-item {
+  background-color: rgba(53, 47, 47, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.details-item:hover {
+  transform: translateY(-2px);
+  background-color: rgba(53, 47, 47, 0.08);
+}
+
+.details-label {
+  font-weight: 500;
+  color: #352F2F;
+  margin-bottom: 5px;
+}
+
+.details-value {
+  color: #352F2F;
   font-size: 0.9em;
-  color: #FBC767;
-  padding-top: 10px;
-  display: none;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
 .SPdetails {
   background-color: #FBC767;
@@ -276,27 +398,21 @@ body {
 }
 
 /* Modal Styling */
-.modal {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
+
 
 .modal-content {
+  position: relative;
   background-color: #FBC767;
   color: #352F2F;
-  padding: 20px;
-  border-radius: 15px;
+  padding: 30px;
+  border-radius: 20px;
   width: 90%;
   max-width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  /* Add these properties */
+  margin: auto;
+  transform: translateY(-50%);
+  top: 50%;
 }
 
 /* Adjusting Modal Buttons */
@@ -381,11 +497,93 @@ body {
   overflow-y: auto;
   padding: 10px;
 }
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
 .request-buttons {
   display: flex;
   gap: 5px;
+  align-items: center;
+}
+.rate-btn {
+  background-color: #FBC767;
+  color: #352F2F;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: transform 0.2s ease;
+}
+.cancel-btn {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.cancel-btn:hover {
+  background-color: #ff0000;
+}
+
+.rate-btn:hover {
+  transform: scale(1.05);
+  background-color: #fad28e;
+}
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 30px;
+  margin: 20px 0;
+}
+
+.star {
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+  color: #352F2F;
+}
+
+.star:hover,
+.star.star-hover {
+  transform: scale(1.2);
+  color: #FBC767;
+}
+
+.star.star-selected {
+  color: #FBC767;
+}
+.modal-content textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #352F2F;
+  background-color: #ffffff;
+  color: #352F2F;
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+  margin: 15px 0;
+}
+.status-select {
+  background-color: #352F2F;
+  color: #FBC767;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-select option {
+  background-color: #352F2F;
+  color: #FBC767;
+}
 .delete-btn {
   padding: 2px 8px;
   border: none;
@@ -398,6 +596,103 @@ body {
   background-color: #ff0000;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  position: relative;
+  background-color: #FBC767;
+  color: #352F2F;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  transform: none;
+  top: 0;
+}
+
+@keyframes modalOpen {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.toggle-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #352F2F;
+  color: #FBC767;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+  transform: rotate(180deg);
+}
+
+.saved-car-item {
+  border-radius: 12px;
+  margin-bottom: 20px;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.saved-car-item:hover {
+  transform: translateX(10px);
+}
+
+.saved-car-item button {
+  background-color: #FBC767;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transform: translateY(0);
+  transition: transform 0.2s ease;
+}
+
+.saved-car-item button:hover {
+  transform: translateY(-2px);
+}
+
+#savedCarsList {
+  scrollbar-width: thin;
+  scrollbar-color: #FBC767 #352F2F;
+}
+
+.delete-btn {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff4444;
+  border: none;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
 /* Responsive Styles */
 
 /* Mobile Phones */

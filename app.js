@@ -42,6 +42,11 @@ const requestSchema = new mongoose.Schema({
     status: { type: String, default: 'Pending' },
     details: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date },
+    rating: {
+        value: { type: Number },
+        review: { type: String }
+    }
 });
 
 const Request = mongoose.model('Request', requestSchema);
@@ -147,25 +152,27 @@ app.get('/api/cars', async (req, res) => {
 });
 
 // 3. Delete a car
-app.delete('/api/cars/:id', async (req, res) => {
+app.delete('/api/requests/:id', async (req, res) => {
     try {
-        console.log('Attempting to delete car with ID:', req.params.id);
+        const { id } = req.params;
+        const deletedRequest = await Request.findByIdAndDelete(id);
         
-        const deletedCar = await Car.findByIdAndDelete(req.params.id);
-        
-        if (!deletedCar) {
-            console.log('Car not found with ID:', req.params.id);
-            return res.status(404).json({ message: 'Car not found' });
+        if (!deletedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
         }
         
-        console.log('Car deleted successfully:', deletedCar);
-        res.status(200).json({ message: 'Car deleted successfully', deletedCar });
+        res.status(200).json({ 
+            message: 'Request deleted successfully', 
+            deletedRequest 
+        });
     } catch (error) {
-        console.error('Error deleting car:', error);
-        res.status(500).json({ message: 'Error deleting car', error: error.message });
+        console.error('Error deleting request:', error);
+        res.status(500).json({ 
+            message: 'Error deleting request', 
+            error: error.message 
+        });
     }
 });
-
 // 4. Create a new request
 app.post('/api/requests', async (req, res) => {
     try {
@@ -273,7 +280,87 @@ app.use((err, req, res, next) => {
         error: err.message 
     });
 });
+app.delete('/api/cars/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedCar = await Car.findByIdAndDelete(id);
+        
+        if (!deletedCar) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        
+        res.status(200).json({ 
+            message: 'Car deleted successfully', 
+            deletedCar 
+        });
+    } catch (error) {
+        console.error('Error deleting car:', error);
+        res.status(500).json({ 
+            message: 'Error deleting car', 
+            error: error.message 
+        });
+    }
+});
+// Add this new route specifically for updating status
+app.patch('/api/requests/:requestId/status', async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const { status } = req.body;
+        
+        const updatedRequest = await Request.findByIdAndUpdate(
+            requestId,
+            { status: status },
+            { new: true }
+        );
 
+        if (!updatedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        res.status(200).json({
+            message: 'Status updated successfully',
+            request: updatedRequest
+        });
+    } catch (error) {
+        console.error('Error updating status:', error);
+        res.status(500).json({ 
+            message: 'Error updating status', 
+            error: error.message 
+        });
+    }
+});
+
+// Add a route for ratings
+app.post('/api/requests/:requestId/rating', async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const { rating, review } = req.body;
+
+        const updatedRequest = await Request.findByIdAndUpdate(
+            requestId,
+            { 
+                rating: { value: rating, review: review },
+                updatedAt: new Date()
+            },
+            { new: true }
+        );
+
+        if (!updatedRequest) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        res.status(200).json({
+            message: 'Rating submitted successfully',
+            request: updatedRequest
+        });
+    } catch (error) {
+        console.error('Error submitting rating:', error);
+        res.status(500).json({ 
+            message: 'Error submitting rating', 
+            error: error.message 
+        });
+    }
+});
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
