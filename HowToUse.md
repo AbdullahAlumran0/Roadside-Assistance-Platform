@@ -9,7 +9,8 @@ cd assist-me
 npm install
 Step 2: Install Additional Requirements
 If you see any missing dependencies, install them using npm:
-bashCopynpm install [requirement-name]
+Copy
+npm install [requirement-name]
 For example:
 npm install express
 npm install mongodb
