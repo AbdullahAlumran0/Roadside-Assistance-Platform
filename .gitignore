@@ -1,3 +1,4 @@
 # Environment variable
 .env
 node_modules/
+safelist.js 

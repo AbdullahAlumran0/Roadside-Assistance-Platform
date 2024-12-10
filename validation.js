@@ -22,7 +22,7 @@ export async function validateCode(codeEnteredByUser,phoneNum) {
   
       
       if (verificationCheck.status === 'approved') {
-        console.log('Verification successful!');
+        console.log("Success");
         
       } else {
         console.log('Verification failed. The code is incorrect.');
@@ -32,4 +32,5 @@ export async function validateCode(codeEnteredByUser,phoneNum) {
       console.error('Error during verification check:', error.message);
     }
   }
+
 

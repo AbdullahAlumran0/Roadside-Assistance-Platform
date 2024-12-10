@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const { createVerification } = require('./vertification.js');
+const { validateCode } = require('./validation.js');
 // Initialize app
 const app = express();
 
@@ -44,11 +47,6 @@ const requestSchema = new mongoose.Schema({
     status: { type: String, default: 'Pending' },
     details: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date },
-    rating: {
-        value: { type: Number },
-        review: { type: String }
-    }
 });
 
 const Request = mongoose.model('Request', requestSchema);
@@ -111,11 +109,11 @@ app.get('/get-data', async (req, res) => {
 });
 
 // Serve Static Pages
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname,'log-in.html')));
 app.get('/HomePage.HTML', (req, res) => res.sendFile(path.join(__dirname, 'public', 'HomePage.HTML')));
 app.get('/car', (req, res) => res.sendFile(path.join(__dirname, 'public', 'car.html')));
 app.get('/requests', (req, res) => res.sendFile(path.join(__dirname, 'public', 'requests.html')));
-
+app.get('/verify', (req, res) => res.sendFile(path.join(__dirname, 'verify.html')));
 // API Routes
 // 1. Create a new car
 app.post('/api/cars', async (req, res) => {
@@ -139,27 +137,25 @@ app.get('/api/cars', async (req, res) => {
 });
 
 // 3. Delete a car
-app.delete('/api/requests/:id', async (req, res) => {
+app.delete('/api/cars/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const deletedRequest = await Request.findByIdAndDelete(id);
+        console.log('Attempting to delete car with ID:', req.params.id);
         
-        if (!deletedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
+        const deletedCar = await Car.findByIdAndDelete(req.params.id);
+        
+        if (!deletedCar) {
+            console.log('Car not found with ID:', req.params.id);
+            return res.status(404).json({ message: 'Car not found' });
         }
         
-        res.status(200).json({ 
-            message: 'Request deleted successfully', 
-            deletedRequest 
-        });
+        console.log('Car deleted successfully:', deletedCar);
+        res.status(200).json({ message: 'Car deleted successfully', deletedCar });
     } catch (error) {
-        console.error('Error deleting request:', error);
-        res.status(500).json({ 
-            message: 'Error deleting request', 
-            error: error.message 
-        });
+        console.error('Error deleting car:', error);
+        res.status(500).json({ message: 'Error deleting car', error: error.message });
     }
 });
+
 // 4. Create a new request
 app.post('/api/requests', async (req, res) => {
     try {
@@ -267,87 +263,48 @@ app.use((err, req, res, next) => {
         error: err.message 
     });
 });
-app.delete('/api/cars/:id', async (req, res) => {
+
+
+app.post('/verify', async (req, res) => {   // for phone sms 
+    const { phoneNumber } = req.body;
+    
     try {
-        const { id } = req.params;
-        const deletedCar = await Car.findByIdAndDelete(id);
-        
-        if (!deletedCar) {
-            return res.status(404).json({ message: 'Car not found' });
-        }
-        
-        res.status(200).json({ 
-            message: 'Car deleted successfully', 
-            deletedCar 
-        });
+        await createVerification(phoneNumber);
+        res.status(200).json({ message: 'Verification sent successfully.' });
     } catch (error) {
-        console.error('Error deleting car:', error);
-        res.status(500).json({ 
-            message: 'Error deleting car', 
-            error: error.message 
-        });
+        res.status(500).json({ message: 'Error sending verification', error: error.message });
     }
 });
-// Add this new route specifically for updating status
-app.patch('/api/requests/:requestId/status', async (req, res) => {
+app.post('/verifyCode', async (req, res) => {
+    const { code, phoneNumber } = req.body;
+
     try {
-        const { requestId } = req.params;
-        const { status } = req.body;
-        
-        const updatedRequest = await Request.findByIdAndUpdate(
-            requestId,
-            { status: status },
-            { new: true }
-        );
+        const verificationStatus = await validateCode(code, phoneNumber);
+        if (verificationStatus === 'approved') {
+            res.status(200).json({ message: 'Verification successful' });
 
-        if (!updatedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
-        }
-
-        res.status(200).json({
-            message: 'Status updated successfully',
-            request: updatedRequest
-        });
+            if (user.role === 1) {
+                // Redirect to the home page for regular users
+                res.redirect('/HomePage.HTML');
+            } else if (user.role === 2) {
+                // Redirect to the service provider's page
+                res.redirect('/ServiceProviderHome.HTML');
+            } else if (user.role === 3) {
+                // Redirect to the admin's page
+                res.redirect('/AdminView.HTML');
+            }
+        } 
+        // else {
+        //     res.status(400).json({ message: 'Verification failed' });
+        // }
     } catch (error) {
-        console.error('Error updating status:', error);
-        res.status(500).json({ 
-            message: 'Error updating status', 
-            error: error.message 
-        });
+        res.status(500).json({ message: 'Error during verification', error: error.message });
     }
 });
 
-// Add a route for ratings
-app.post('/api/requests/:requestId/rating', async (req, res) => {
-    try {
-        const { requestId } = req.params;
-        const { rating, review } = req.body;
 
-        const updatedRequest = await Request.findByIdAndUpdate(
-            requestId,
-            { 
-                rating: { value: rating, review: review },
-                updatedAt: new Date()
-            },
-            { new: true }
-        );
+// Need a post for sms validation/moving to next page. (Logic already in the verify file just need the roles)
 
-        if (!updatedRequest) {
-            return res.status(404).json({ message: 'Request not found' });
-        }
-
-        res.status(200).json({
-            message: 'Rating submitted successfully',
-            request: updatedRequest
-        });
-    } catch (error) {
-        console.error('Error submitting rating:', error);
-        res.status(500).json({ 
-            message: 'Error submitting rating', 
-            error: error.message 
-        });
-    }
-});
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

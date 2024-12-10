@@ -5,7 +5,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.8.4",
-    "twilio": "^5.3.6"
+    "twilio": "^5.3.7"
   },
-  "type": "commonjs"
+  "type": "module"
 }

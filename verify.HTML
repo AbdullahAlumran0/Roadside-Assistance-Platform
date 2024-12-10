@@ -6,44 +6,88 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AssistMe Login</title>
         <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+        <script src="validation.js"></script>
     </head>
 <body>
     <div class="container">
 
         <!--Back button-->
-        <a href="log-in.HTML" class="back-link"><img src="Images/BackButton.png" width="55p" height="55p" ></a>
+        <a href="/" class="back-link"><img src="Images/BackButton.png" width="55p" height="55p" ></a>
 
         <!-- Title and subtitle -->
         <h1><strong>AssistMe</strong>, Your Safety, Our Priority</h1>
 
         <!-- Login card -->
         <div class="login-card">
+            <script>const phomeNumber = localStorage.getItem("phoneNumber");</script>
             <h2>Verify Your Number</h2>
-            <p>Enter the 6-digits code sent to 05********</p>
+            <p>Enter the 6-digits code sent to {<script>phomeNumber</script>}</p>
             <div class="input-group">
-                <input type="text" placeholder="******" maxlength="6">
+                <input id="code"type="text" placeholder="******" maxlength="6">
             </div>
             <button class="continue-btn" onclick=verifyAndRedirect()>Continue</button>
             <br>
             <br>
-            <a href="log-in.HTML">Resend PIN code</a>
+            <a href="/">Resend PIN code</a>
         </div>
-        <script>
+        <!-- <script>
             function verifyAndRedirect() {
-                // Retrieve the saved role from localStorage
-                const selectedRole = localStorage.getItem('selectedRole');
-            
-                // Redirect based on the role
-                if (selectedRole === 'Admin') {
-                    window.location.href = 'AdminView.html'; // Admin view page
-                } 
-                else if(selectedRole === 'Assistance Provider') {
-                    window.location.href = 'ServiceProviderHome.html'
-                }
-                else {
-                    window.location.href = 'HomePage.html'; // Default page for other roles
-                }
+
+                const phomeNumber = localStorage.getItem("phoneNumber");
+                
+
+                return validateCode(document.getElementById("code"),phomeNumber);
             }
+            </script> -->
+            <!-- <script>
+                function verifyAndRedirect() {
+                    const phoneNumber = localStorage.getItem("phoneNumber"); 
+                    const code = document.getElementById("code").value;
+                    
+                    validateCode(code, phoneNumber)
+                        .then(result => {
+                            console.log(result); //remove this later.
+                            if (result === 'approved') {
+                                //need to direct from here i guess
+                                window.location.href = "/"; // Adjust this URL to the page you want to redirect to
+                            } else {
+                                alert('Verification failed. Please try again.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error during verification:', err);
+                            alert('An error occurred during verification. Please try again later.');
+                        });
+                }
+            </script> -->
+            <script>
+                function verifyAndRedirect() {
+                    const phoneNumber = localStorage.getItem("phoneNumber"); 
+                    const code = document.getElementById("code").value;
+                    
+                    // Make a POST request to the server to validate the code
+                    fetch('/verifyCode', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ code, phoneNumber }) // Send the code and phone number
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.message === 'Verification successful') {
+                            window.location.href = "/"; // Redirect after successful verification
+                        } 
+                        else {
+                            console.log(result.message);
+                            alert('Verification failed. Please try again.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error during verification:', err);
+                        alert('An error occurred during verification. Please try again later.');
+                    });
+                }
             </script>
         <!-- Footer with register link -->
         <div class="footer">
