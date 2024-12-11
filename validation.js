@@ -17,17 +17,7 @@ export async function validateCode(codeEnteredByUser,phoneNum) {
           to: phoneNum,  //+966 format
           code: codeEnteredByUser,  
         });
-        
-      console.log('Verification Check status:', verificationCheck.status);
-  
-      
-      if (verificationCheck.status === 'approved') {
-        console.log("Success");
-        
-      } else {
-        console.log('Verification failed. The code is incorrect.');
-        
-      }
+      return verificationCheck.status;
     } catch (error) {
       console.error('Error during verification check:', error.message);
     }
