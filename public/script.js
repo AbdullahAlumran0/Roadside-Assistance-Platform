@@ -3,7 +3,8 @@ const API_BASE_URL = 'http://localhost:3000/api';
 
 // Modal Functions
 function showNewRequestModal() {
-    document.getElementById('newRequestModal').style.display = 'block';
+    const modal = document.getElementById('newRequestModal');
+    modal.style.display = 'flex';
 }
 
 function hideNewRequestModal() {
@@ -354,16 +355,41 @@ function confirmCarDetailsSelection() {
 function createRequestElement(request) {
     const div = document.createElement('div');
     div.className = 'request-card';
+    div.id = request._id;
+
+    const statusColors = {
+        'Pending': '#FFA500',
+        'In Progress': '#1E90FF',
+        'Completed': '#32CD32'
+    };
+
     div.innerHTML = `
         <div class="request-header">
-            <span>Request: <span class="status">${request.status}</span></span>
-            <div class="request-buttons">
+            <span>Request: 
+                <select class="status-select" onchange="updateStatus('${request._id}', this.value)" 
+                        style="background-color: #352F2F; color: ${statusColors[request.status]}; border: none; padding: 5px; border-radius: 5px;">
+                    <option value="Pending" ${request.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="In Progress" ${request.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${request.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                </select>
+            </span>
+            <div class="request-buttons" style="display: flex; gap: 5px;">
                 <button class="toggle-btn" onclick="toggleDetails('${request._id}')">▼</button>
-                <button class="delete-btn" onclick="deleteRequest('${request._id}')" style="background-color: #ff4444; color: white; margin-left: 5px;">✕</button>
+                  <button class="delete-btn" onclick="deleteRequest('${request._id}')" style="background-color: #ff4444; color: white; margin-left: 5px;">✕</button> 
+                <button class="rate-btn" onclick="showRatingModal('${request._id}')"
+                        style="background-color: #FBC767; border: none; border-radius: 5px; padding: 5px 10px; color: #352F2F; cursor: pointer; ${request.status !== 'Completed' ? 'display: none;' : ''}">
+                    Rate
+                </button>
             </div>
         </div>
         <div class="details" id="details-${request._id}" style="display: none;">
             ${request.details.split('\n').map(line => `<p>${line.trim()}</p>`).join('')}
+            ${request.rating ? `
+                <div class="rating-display">
+                    <p>Rating: ${'★'.repeat(request.rating.value)}${'☆'.repeat(5-request.rating.value)}</p>
+                    ${request.rating.review ? `<p>Review: ${request.rating.review}</p>` : ''}
+                </div>
+            ` : ''}
             <p>Created: ${new Date(request.createdAt).toLocaleString()}</p>
         </div>
     `;
@@ -371,12 +397,14 @@ function createRequestElement(request) {
 }
 
 // Add the delete request function
+// In your deleteRequest function, add logging:
 async function deleteRequest(requestId) {
     if (!confirm('Are you sure you want to delete this request?')) {
         return;
     }
 
     try {
+        console.log('Attempting to delete request:', requestId);
         const response = await fetch(`${API_BASE_URL}/requests/${requestId}`, {
             method: 'DELETE',
             headers: {
@@ -384,19 +412,186 @@ async function deleteRequest(requestId) {
             }
         });
 
+        console.log('Delete response:', response);
+
         if (response.ok) {
-            await loadRequests(); // Refresh the list
+            await loadRequests();
             alert('Request deleted successfully');
         } else {
-            throw new Error('Failed to delete request');
+            const error = await response.json();
+            console.error('Server error:', error);
+            throw new Error(error.message || 'Failed to delete request');
         }
     } catch (error) {
         console.error('Error deleting request:', error);
-        alert('Failed to delete request. Please try again.');
+        alert('Failed to delete request: ' + error.message);
+    }
+}
+function getLocation() {
+    const locationInput = document.querySelector('input[placeholder="Share Location"]');
+    
+    if (!navigator.geolocation) {
+        locationInput.value = 'Geolocation not supported';
+        return;
+    }
+
+    locationInput.value = 'Getting location...';
+    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            locationInput.value = `${latitude}, ${longitude}`;
+        },
+        (error) => {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    locationInput.value = 'Location access denied';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    locationInput.value = 'Location unavailable';
+                    break;
+                case error.TIMEOUT:
+                    locationInput.value = 'Location request timed out';
+                    break;
+                default:
+                    locationInput.value = 'Location error';
+            }
+        }
+    );
+}
+function showRatingModal(requestId) {
+    ratingRequestId = requestId; // Store the request ID globally
+    const modal = document.getElementById('ratingModal');
+    modal.style.display = 'flex';
+    
+    // Reset stars and review
+    currentRating = 0;
+    updateStarDisplay(0);
+    document.querySelector('#ratingModal textarea').value = '';
+}
+
+// Function to hide rating modal
+function hideRatingModal() {
+    const modal = document.getElementById('ratingModal');
+    modal.style.display = 'none';
+}
+
+// Function to handle star hover
+function handleStarHover(rating) {
+    const stars = document.querySelectorAll('.rating-stars .star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.textContent = '★';
+            star.classList.add('star-hover');
+        } else {
+            star.textContent = '☆';
+            star.classList.remove('star-hover');
+        }
+    });
+}
+
+// Function to update star display
+function updateStarDisplay(rating) {
+    const stars = document.querySelectorAll('.rating-stars .star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.textContent = '★';
+            star.classList.add('star-selected');
+        } else {
+            star.textContent = '☆';
+            star.classList.remove('star-selected');
+        }
+    });
+}
+
+// Function to submit rating
+async function submitRating() {
+    try {
+        const reviewText = document.querySelector('#ratingModal textarea').value;
+        const response = await fetch(`${API_BASE_URL}/requests/${ratingRequestId}/rating`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rating: currentRating,
+                review: reviewText
+            })
+        });
+
+        if (response.ok) {
+            alert('Thank you for your rating!');
+            hideRatingModal();
+            await loadRequests(); // Refresh the requests list
+        } else {
+            throw new Error('Failed to submit rating');
+        }
+    } catch (error) {
+        console.error('Error submitting rating:', error);
+        alert('Failed to submit rating. Please try again.');
     }
 }
 
+// Function to update request status
+async function updateStatus(requestId, newStatus) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/requests/${requestId}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        if (response.ok) {
+            const requestCard = document.getElementById(requestId);
+            const rateButton = requestCard.querySelector('.rate-btn');
+            
+            // Show/hide rate button
+            if (newStatus === 'Completed') {
+                rateButton.style.display = 'block';
+            } else {
+                rateButton.style.display = 'none';
+            }
+
+            // Update status colors
+            const statusColors = {
+                'Pending': '#FFA500',
+                'In Progress': '#1E90FF',
+                'Completed': '#32CD32'
+            };
+            
+            const statusSelect = requestCard.querySelector('.status-select');
+            statusSelect.style.color = statusColors[newStatus];
+
+            console.log('Status updated successfully');
+        } else {
+            throw new Error('Failed to update status');
+        }
+    } catch (error) {
+        console.error('Error updating status:', error);
+        alert('Failed to update status. Please try again.');
+    }
+}
+function initializeRatingSystem() {
+    const stars = document.querySelectorAll('.rating-stars .star');
+    stars.forEach(star => {
+        const rating = parseInt(star.dataset.rating);
+        
+        star.addEventListener('mouseover', () => handleStarHover(rating));
+        star.addEventListener('mouseout', () => handleStarHover(currentRating));
+        star.addEventListener('click', () => {
+            currentRating = rating;
+            updateStarDisplay(rating);
+        });
+    });
+
+    document.getElementById('ratingCancelBtn').addEventListener('click', hideRatingModal);
+    document.getElementById('ratingSubmitBtn').addEventListener('click', submitRating);
+}
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     loadRequests();
+    initializeRatingSystem()
 });

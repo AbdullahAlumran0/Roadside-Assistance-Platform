@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./public/style.css">
     <title>Car</title>
 </head>
 <body>
     <!-- Go back button -->
     <a href="HomePage.HTML" class="back-link">
-        <img src="Images/BackButton.png" width="50px" height="50px">
+        <img src="public/Images/BackButton.png" width="50px" height="50px">
     </a>
 
     <div class="fixed-container">
@@ -25,7 +25,7 @@
 
         <!-- Car Element -->
         <div class="car">
-            <img src="Images/car.png" alt="Outlined car" />
+            <img src="public/Images/car.png" alt="Outlined car" />
         </div>
     </div>
     <style>
@@ -325,7 +325,7 @@ function createCarCard(carDetails) {
 
     carCard.innerHTML = `
         <h3 class="car-name">${carDetails.manufacturer}</h3>
-        <img src="Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
+        <img src="public/Images/ArrowDown.png" class="arrow-icon" alt="Arrow Down" />
         <button class="delete-button">Delete</button>
 
         <div class="more-info">
