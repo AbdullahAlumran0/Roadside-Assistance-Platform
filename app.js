@@ -80,7 +80,7 @@ const User = mongoose.model('User', userSchema);
 // Routes
 app.get('/HomePage.HTML', (req, res) => {
     console.log('Attempting to serve HomePage.HTML');
-    const filePath = path.join(__dirname, 'public', 'HomePage.HTML');
+    const filePath = path.join(__dirname, 'HomePage.HTML');
     console.log('File path:', filePath);
     res.sendFile(filePath, (err) => {
         if (err) {
@@ -111,7 +111,7 @@ app.get('/get-data', async (req, res) => {
 });
 
 // Serve Static Pages
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'log-in.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/HomePage.HTML', (req, res) => res.sendFile(path.join(__dirname, 'public', 'HomePage.HTML')));
 app.get('/car', (req, res) => res.sendFile(path.join(__dirname, 'public', 'car.html')));
 app.get('/requests', (req, res) => res.sendFile(path.join(__dirname, 'public', 'requests.html')));
@@ -334,14 +334,6 @@ app.post('/verifyCode', async (req, res) => {
         const verificationStatus = await validateCode(code, phoneNumber);
         if (verificationStatus === 'approved') {
             res.status(200).json({ message: 'Verification successful' });
-
-            if (user.role === 1) {
-                res.redirect('/HomePage.HTML');
-            } else if (user.role === 2) {
-                res.redirect('/ServiceProviderHome.HTML');
-            } else if (user.role === 3) {
-                res.redirect('/AdminView.HTML');
-            }
         } 
     } catch (error) {
         res.status(500).json({ message: 'Error during verification', error: error.message });
